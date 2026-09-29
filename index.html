@@ -1,0 +1,700 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <meta name="theme-color" content="#111827" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  <meta name="apple-mobile-web-app-title" content="艾瑟加德 Controller" />
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; connect-src 'self'; object-src 'none'; base-uri 'self'; form-action 'self'">
+<title>艾瑟加德 RP Controller v2.2</title>
+  <style>
+    :root{color-scheme:dark;--bg:#0b1020;--panel:#111827;--panel2:#172033;--line:#2b3953;--text:#eef2ff;--muted:#a7b0c3;--good:#4ade80;--warn:#fbbf24;--bad:#fb7185;--accent:#a78bfa;--accent2:#7dd3fc}
+    *{box-sizing:border-box} body{margin:0;background:linear-gradient(180deg,#0b1020,#0c1428 70%,#0b1020);color:var(--text);font-family:-apple-system,BlinkMacSystemFont,"SF Pro Text","PingFang TC","Noto Sans TC",sans-serif;min-height:100vh}
+    header{position:sticky;top:0;z-index:5;background:rgba(11,16,32,.94);backdrop-filter:blur(16px);border-bottom:1px solid var(--line);padding:max(12px,env(safe-area-inset-top)) 16px 12px}
+    header h1{font-size:18px;margin:0 0 3px} header p{margin:0;color:var(--muted);font-size:12px}
+    main{max-width:980px;margin:auto;padding:14px 14px calc(36px + env(safe-area-inset-bottom))}
+    .grid{display:grid;gap:12px}.topgrid{grid-template-columns:repeat(2,minmax(0,1fr))}@media(min-width:760px){.topgrid{grid-template-columns:repeat(4,minmax(0,1fr))}}
+    .card{background:rgba(17,24,39,.95);border:1px solid var(--line);border-radius:16px;padding:14px;box-shadow:0 10px 30px rgba(0,0,0,.18)}
+    .metric .label{font-size:11px;color:var(--muted)} .metric .value{font-size:17px;font-weight:700;margin-top:4px;overflow-wrap:anywhere}
+    .section-title{display:flex;align-items:center;justify-content:space-between;gap:8px;margin:0 0 10px}.section-title h2{font-size:15px;margin:0}.pill{font-size:11px;padding:4px 8px;border-radius:999px;border:1px solid var(--line);color:var(--muted)}
+    button,.btn{appearance:none;border:1px solid var(--line);background:#1f2a44;color:var(--text);border-radius:11px;padding:10px 12px;font-weight:650;font-size:14px;cursor:pointer}button:active{transform:translateY(1px)}button.primary{background:#5b46a8;border-color:#7c68cf}button.good{background:#175c38;border-color:#2d8d58}button.warn{background:#6d4a13;border-color:#a8751b}button.bad{background:#6e2634;border-color:#a83b50}button.ghost{background:transparent}
+    .row{display:flex;gap:8px;flex-wrap:wrap}.row>*{flex:0 0 auto}.grow{flex:1 1 220px}.toolbar{display:flex;gap:8px;flex-wrap:wrap}
+    textarea,input,select{width:100%;border:1px solid var(--line);background:#0b1325;color:var(--text);border-radius:12px;padding:11px 12px;font-size:15px;outline:none}textarea{min-height:110px;resize:vertical;line-height:1.5}input:focus,textarea:focus,select:focus{border-color:var(--accent)}
+    label{display:block;font-size:12px;color:var(--muted);margin:10px 0 6px}.small{font-size:12px;color:var(--muted);line-height:1.45}.mono{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:12px;white-space:pre-wrap;word-break:break-word;background:#09101e;border:1px solid var(--line);border-radius:12px;padding:10px;max-height:320px;overflow:auto}
+    .status-good{color:var(--good)}.status-warn{color:var(--warn)}.status-bad{color:var(--bad)}.accent{color:var(--accent2)}
+    details{border-top:1px solid var(--line);padding-top:10px;margin-top:10px}summary{cursor:pointer;color:#d8def0;font-weight:650}.hidden{display:none!important}
+    nav{display:flex;gap:7px;overflow:auto;padding:0 0 10px;scrollbar-width:none}nav button{white-space:nowrap;padding:8px 11px;font-size:12px;background:#121c31}nav button.active{background:#4c3c8b;border-color:#7c68cf}
+    .tab{display:none}.tab.active{display:block}.notice{padding:10px 12px;border:1px solid var(--line);border-radius:12px;background:#101a2e;font-size:12px;line-height:1.45}.notice.warn{border-color:#8a651a;background:#2b210d}.notice.good{border-color:#2f7d52;background:#10261b}.notice.bad{border-color:#8f3044;background:#2b1117}
+    .kv{display:grid;grid-template-columns:110px minmax(0,1fr);gap:7px 10px;font-size:13px}.kv .k{color:var(--muted)}
+    .list{display:grid;gap:7px}.item{padding:9px 10px;border:1px solid var(--line);border-radius:10px;background:#0f182a;font-size:13px}.danger-zone{border-color:#713244}
+    code{color:#c4b5fd}.footer{color:var(--muted);font-size:11px;text-align:center;margin-top:16px}
+  </style>
+</head>
+<body>
+<header><h1>艾瑟加德 RP Controller <span class="accent">v2.2</span></h1><p>iPhone Safari 單檔版｜本機 Runtime｜不連外、不含劇情資料</p></header>
+<main>
+  <div class="grid topgrid" id="metrics"></div>
+  <div style="height:12px"></div>
+  <nav id="tabs">
+    <button data-tab="home" class="active">總覽</button>
+    <button data-tab="turn">本回合</button>
+    <button data-tab="packet">角色封包</button>
+    <button data-tab="state">狀態檢視</button>
+    <button data-tab="history">版本／回滾</button>
+    <button data-tab="settings">匯入／備份</button>
+  </nav>
+
+  <section id="tab-home" class="tab active">
+    <div class="card">
+      <div class="section-title"><h2>目前承接</h2><span class="pill" id="runtimeHealth">尚未載入</span></div>
+      <div id="handoff" class="notice">請先到「匯入／備份」載入你的 <code>Aethergard_Runtime_v2_CURRENT.json</code>。</div>
+      <div style="height:10px"></div><div id="sceneSummary" class="kv"></div>
+    </div>
+    <div style="height:12px"></div>
+    <div class="card">
+      <div class="section-title"><h2>隱私與權威</h2><span class="pill">公開網站也不會上傳 Runtime</span></div>
+      <div class="notice good">這個網頁本身不含艾瑟加德劇情資料。你匯入的 Runtime 只保存在這個網站於 Safari 的本機儲存空間。公開 GitHub Pages 時，只需要上傳這一個 <code>index.html</code>。</div>
+    </div>
+  </section>
+
+  <section id="tab-turn" class="tab">
+    <div class="card">
+      <div class="section-title"><h2>① 玩家輸入</h2><span class="pill" id="pendingPill">無 Pending</span></div>
+      <label>這一回你原本會打進 ChatGPT 的內容</label>
+      <textarea id="playerInput" placeholder="例如：尾巴慢慢晃了晃。&#10;「我看看。」"></textarea>
+      <label>這則訊息的性質</label>
+      <select id="turnSignal"><option value="IN_WORLD">世界內 RP（會默認接受上一回）</option><option value="OOC">OOC／場外問題（不接受上一回）</option><option value="CORRECTION">修正／重來（丟棄上一回）</option></select>
+      <div class="toolbar" style="margin-top:10px"><button id="parseBtn" class="primary">解析輸入</button><button id="clearTurnBtn" class="ghost">清空</button></div>
+      <div id="parseResult" class="hidden" style="margin-top:12px">
+        <div class="notice warn" id="nonspokenWarning"></div>
+        <label>NPC 可觀察到的「」外動作（只有確定可被看見／聽見的才放）</label>
+        <textarea id="observableAction" placeholder="例如：尾巴慢慢晃了晃。"></textarea>
+        <label>私人內容／內心（不會進 NPC 私有封包）</label>
+        <textarea id="privateContent" placeholder="可留空。"></textarea>
+        <label>OOC（若有）</label><textarea id="oocContent" placeholder="可留空。"></textarea>
+        <div class="toolbar"><button id="allPrivateBtn">「」外全部當私人</button><button id="allObservableBtn">「」外全部當可觀察</button><button id="classifyBtn" class="primary">完成分類</button></div>
+      </div>
+      <div id="requestArea" class="hidden" style="margin-top:12px">
+        <div class="section-title"><h2>② 給 ChatGPT 的 Turn Request</h2><span class="pill">不含 UNKNOWN 真相</span></div>
+        <div class="toolbar"><button id="copyRequestBtn" class="good">複製 Request</button><button id="shareRequestBtn">分享</button></div>
+        <div id="requestPreview" class="mono" style="margin-top:8px"></div>
+      </div>
+    </div>
+
+    <div style="height:12px"></div>
+    <div class="card">
+      <div class="section-title"><h2>③ 貼回 ChatGPT Candidate Envelope</h2><span class="pill">先驗證，不立即 Commit</span></div>
+      <textarea id="candidateInput" placeholder='貼 JSON：{"narration":"...","candidate_deltas":[],"narration_claims":[],"validation":{"pre_render":"PASS","post_render":"PASS"}}'></textarea>
+      <div class="toolbar"><button id="validateCandidateBtn" class="primary">驗證並建立 Pending</button><button id="rejectPendingBtn" class="bad">丟棄 Pending</button></div>
+      <div id="candidateStatus" style="margin-top:10px"></div>
+    </div>
+  </section>
+
+  <section id="tab-packet" class="tab">
+    <div class="card"><div class="section-title"><h2>角色私有封包預覽</h2><span class="pill">Actor-safe</span></div>
+      <label>角色</label><select id="actorSelect"></select>
+      <div class="toolbar" style="margin-top:10px"><button id="buildPacketBtn" class="primary">建立私有封包</button><button id="copyPacketBtn">複製</button></div>
+      <div id="packetPreview" class="mono" style="margin-top:10px">尚未建立。</div>
+    </div>
+  </section>
+
+  <section id="tab-state" class="tab">
+    <div class="card"><div class="section-title"><h2>Runtime 狀態</h2><span class="pill">只讀檢視</span></div>
+      <label>資料區</label><select id="stateCollection"></select>
+      <div id="statePreview" class="mono" style="margin-top:10px">尚未載入。</div>
+    </div>
+  </section>
+
+  <section id="tab-history" class="tab">
+    <div class="card"><div class="section-title"><h2>版本與檢查點</h2><span class="pill" id="revisionPill">rev ?</span></div>
+      <div class="toolbar"><button id="checkpointBtn" class="good">建立 Checkpoint</button><button id="exportHandoverBtn">匯出 Handover</button></div>
+      <div id="historyList" class="list" style="margin-top:12px"></div>
+    </div>
+    <div style="height:12px"></div>
+    <div class="card danger-zone"><div class="section-title"><h2>事件污染回滾</h2><span class="pill">只撤指定因果</span></div>
+      <label>要失效的 event refs，逗號分隔</label><input id="rollbackRefs" placeholder="event-xxx, event-yyy" />
+      <div class="toolbar" style="margin-top:10px"><button id="rollbackBtn" class="bad">建立 Rollback Revision</button></div>
+      <div id="rollbackStatus" style="margin-top:10px"></div>
+    </div>
+  </section>
+
+  <section id="tab-settings" class="tab">
+    <div class="card"><div class="section-title"><h2>Runtime 匯入／備份</h2><span class="pill">資料留在 Safari</span></div>
+      <input type="file" id="runtimeFile" accept="application/json,.json" />
+      <div class="toolbar" style="margin-top:10px"><button id="importRuntimeBtn" class="primary">匯入 Runtime</button><button id="exportRuntimeBtn" class="good">下載備份</button><button id="shareRuntimeBtn">分享備份</button><button id="validateRuntimeBtn">重新驗證</button></div>
+      <div id="importStatus" style="margin-top:10px"></div>
+      <details><summary>部署安全提醒</summary><p class="small">GitHub Pages 只上傳這個套件的 <code>public/</code>。不要把你的 Runtime JSON、搬家存檔、角色卡或事件總檔放進公開 Repository。網站程式是公開殼，劇情資料留在 Safari。</p></details>
+    </div>
+    <div style="height:12px"></div>
+    <div class="card danger-zone"><div class="section-title"><h2>清除本機資料</h2><span class="pill">不可復原</span></div><button id="wipeBtn" class="bad">清除 Safari 內的 Runtime／Checkpoints</button></div>
+  </section>
+  <div class="footer">Aethergard Controller v2.2 • static / no API / no telemetry</div>
+</main>
+<script>
+const Core = (() => {
+const KNOWLEDGE_STATES = new Set(['KNOWN','PARTIAL','SUSPECTED','BELIEVED','MISUNDERSTOOD','DENIED','UNKNOWN']);
+const REL_STATUS = new Set(['ACTIVE','ENDED','INVALIDATED','SUPERSEDED','UNKNOWN_CONFLICT']);
+const DOMAIN_TO_COLLECTION = {
+  world_state: 'world_state',
+  entity_registry: 'entity_registry',
+  character_runtime: 'character_runtime',
+  perception_evidence: 'perception_evidence',
+  knowledge_records: 'knowledge_records',
+  memory_records: 'memory_records',
+  belief_records: 'belief_records',
+  relationships: 'relationships',
+  commitments: 'commitments',
+  goals_and_projects: 'goals_and_projects',
+  active_events: 'active_events',
+  world_processes: 'world_processes',
+  schedules: 'schedules',
+  ongoing_actions_and_effects: 'ongoing_actions_and_effects',
+  capability_state: 'capability_state',
+  calibration: 'calibration'
+};
+
+function deepClone(x){
+  if (typeof structuredClone === 'function') return structuredClone(x);
+  return JSON.parse(JSON.stringify(x));
+}
+function stableId(prefix='id'){
+  const uuid = globalThis.crypto?.randomUUID ? globalThis.crypto.randomUUID() : `${Date.now().toString(36)}-${Math.random().toString(36).slice(2)}-${Math.random().toString(36).slice(2)}`;
+  return `${prefix}-${uuid}`;
+}
+
+function createEmptyRuntime({sessionId='AETHERGARD', revision=0, worldTime='UNSET'}={}){
+  return {
+    schema_version:'2.0', session_id:sessionId, state_revision:revision,
+    simulation_time:{current_world_datetime:worldTime,last_committed_event_time:null,calendar_ref:null},
+    active_rule_sources:[], source_registry:[],
+    player_contract:{
+      spoken_delimiters:['「','」'], quoted_text_is_spoken_dialogue:true,
+      model_may_invent_player_internal_state:false, model_may_invent_player_dialogue:false,
+      model_may_invent_player_major_choice:false, ooc_does_not_auto_commit_pending_turn:true,
+      correction_rejects_pending_turn:true, next_in_world_turn_accepts_previous_pending_turn:true,
+      explicit_save_accepts_previous_pending_turn:true, chat_switch_requires_checkpoint_if_pending_turn_exists:true
+    },
+    world_state:[], entity_registry:[], character_runtime:[],
+    current_scene:{scene_id:'scene-current',location_entity_id:null,present_entities:[],spatial_relations:[],object_states:[],environmental_states:[],active_hazards:[],unresolved_dialogue_threads:[],ongoing_actions:[],ongoing_effects:[],exact_handoff:'',scene_truth_event_refs:[]},
+    perception_evidence:[], knowledge_records:[], memory_records:[], belief_records:[], relationships:[], commitments:[], goals_and_projects:[], active_events:[], world_processes:[], schedules:[], ongoing_actions_and_effects:[], capability_state:[], calibration:[],
+    pending_turn:null, commit_log:[], checkpoint_index:[], archive_index:[], audit_state:{invalidated_event_refs:[],last_validation:null}
+  };
+}
+
+function parsePlayerInput(raw, delimiters=['「','」']){
+  const [open,close]=delimiters;
+  const spoken=[]; let outside=''; let i=0;
+  while(i<raw.length){
+    const a=raw.indexOf(open,i);
+    if(a<0){ outside+=raw.slice(i); break; }
+    outside+=raw.slice(i,a);
+    const b=raw.indexOf(close,a+open.length);
+    if(b<0){ outside+=raw.slice(a); break; }
+    spoken.push(raw.slice(a+open.length,b));
+    i=b+close.length;
+  }
+  // Critical privacy rule: text outside 「」 is NOT automatically observable.
+  // It may be action, narration, thought, sensation, OOC, or mixed content.
+  return {
+    raw,
+    spoken_dialogue:spoken,
+    outside_quotes:outside.trim(),
+    nonspoken_unclassified:outside.trim(),
+    observable_action_text:'',
+    private_player_content:null,
+    ooc:null,
+    classification_status:outside.trim() ? 'NEEDS_CLASSIFICATION' : 'CLEAR'
+  };
+}
+
+function classifyPlayerNonspoken(parsed,{observableAction='',privateContent=null,ooc=null}={}){
+  return {
+    ...deepClone(parsed),
+    observable_action_text:String(observableAction??'').trim(),
+    private_player_content:privateContent==null?null:String(privateContent),
+    ooc:ooc==null?null:String(ooc),
+    classification_status:'CLASSIFIED'
+  };
+}
+
+function makeKnowledgeRecord({id=stableId('know'),owner,topic,state='UNKNOWN',actorContent='',acquisitionRefs=[],truthRef=null,confidence='UNKNOWN',time='UNSET'}){
+  if(!KNOWLEDGE_STATES.has(state)) throw new Error(`invalid knowledge state: ${state}`);
+  if(state!=='UNKNOWN' && acquisitionRefs.length===0) throw new Error('non-UNKNOWN knowledge requires acquisition_refs');
+  return {knowledge_id:id,owner_entity_id:owner,topic_ref:topic,state,content_as_actor_understands_it:actorContent,acquisition_refs:[...acquisitionRefs],confidence,last_updated_at:time,contradicted_by_actor_evidence_refs:[],system_truth_ref:truthRef};
+}
+
+function compactMemory(memory){
+  return {
+    memory_id:memory.memory_id, owner_entity_id:memory.owner_entity_id,
+    world_event_reference:memory.world_event_reference, source:memory.source,
+    original_experience:memory.original_experience, remembered_version:memory.remembered_version,
+    access_state:memory.access_state, accuracy_state:memory.accuracy_state,
+    raw_event_reference:memory.raw_event_reference ?? null
+  };
+}
+
+function getDirectionalRelationship(runtime,from,to){
+  return runtime.relationships.find(r=>r.from_entity_id===from && r.to_entity_id===to) ?? null;
+}
+
+function visibleWorldConstraintsFor(runtime,actorId){
+  // Actor packets must never receive hidden GM truth merely because a knowledge
+  // record points at that truth. Actor-specific information belongs in the
+  // sanitized knowledge view below.
+  const safeClasses=new Set(['PUBLIC','COMMON_KNOWLEDGE']);
+  return runtime.world_state.filter(f=>safeClasses.has(f.visibility_class));
+}
+
+function actorSafeKnowledgeView(record){
+  if(!record || record.state==='UNKNOWN') return null;
+  return {
+    knowledge_id:record.knowledge_id,
+    state:record.state,
+    content_as_actor_understands_it:record.content_as_actor_understands_it,
+    acquisition_refs:deepClone(record.acquisition_refs??[]),
+    confidence:record.confidence??'UNKNOWN',
+    last_updated_at:record.last_updated_at??null,
+    contradicted_by_actor_evidence_refs:deepClone(record.contradicted_by_actor_evidence_refs??[])
+  };
+}
+
+
+function actorSafeEvidenceView(record){
+  return {
+    evidence_id:record.evidence_id,
+    acquired_at:record.acquired_at??null,
+    channel:record.channel??null,
+    source_entity_or_medium:record.source_entity_or_medium??null,
+    observability:record.observability??null,
+    observed_content:record.observed_content??'',
+    uncertainty:record.uncertainty??null,
+    delay:record.delay??null,
+    common_ground_status:record.common_ground_status??'NONE'
+  };
+}
+
+function actorSafeMemoryView(record){
+  return {
+    memory_id:record.memory_id,
+    source:record.source,
+    source_confidence:record.source_confidence??null,
+    original_experience:record.original_experience,
+    remembered_version:record.remembered_version,
+    access_state:record.access_state,
+    recall_confidence:record.recall_confidence??null,
+    retrieval_cues:deepClone(record.retrieval_cues??[]),
+    current_relevance:record.current_relevance??null
+  };
+}
+
+function actorSafeRelationshipView(record){
+  return {
+    relationship_id:record.relationship_id,
+    to_entity_id:record.to_entity_id,
+    status:record.status,
+    perceived_relationship:record.perceived_relationship??null,
+    established_elements:deepClone(record.established_elements??[]),
+    unresolved_tensions:deepClone(record.unresolved_tensions??[]),
+    history_refs:deepClone(record.history_refs??[])
+  };
+}
+
+function buildPrivateCharacterPacket(runtime,actorId,{playerParsed=null,allowPlayerPrivate=false}={}){
+  const evidence=runtime.perception_evidence.filter(e=>e.observer_entity_id===actorId && e.observability!=='NONE').map(actorSafeEvidenceView);
+  const knowledge=runtime.knowledge_records.filter(k=>k.owner_entity_id===actorId).map(actorSafeKnowledgeView).filter(Boolean);
+  const memories=runtime.memory_records.filter(m=>m.owner_entity_id===actorId && m.access_state!=='BLOCKED' && m.access_state!=='FORGOTTEN').map(actorSafeMemoryView);
+  const beliefs=runtime.belief_records.filter(b=>b.owner_entity_id===actorId).map(deepClone);
+  const relationships=runtime.relationships.filter(r=>r.from_entity_id===actorId).map(actorSafeRelationshipView);
+  const commitments=runtime.commitments.filter(c=>c.owner_entity_id===actorId || c.party_entity_ids?.includes(actorId)).map(deepClone);
+  return {
+    actor_entity_id:actorId,
+    character_runtime:deepClone(runtime.character_runtime.find(c=>c.entity_id===actorId) ?? null),
+    evidence,knowledge,memories,beliefs,relationships,commitments,
+    world_constraints:visibleWorldConstraintsFor(runtime,actorId).map(deepClone),
+    player_spoken_dialogue:deepClone(playerParsed?.spoken_dialogue ?? []),
+    player_observable_action:playerParsed?.observable_action_text ?? '',
+    player_private_content:allowPlayerPrivate ? playerParsed?.private_player_content ?? null : null
+  };
+}
+
+function routeSpecialSense({observer,eventRef,channel='EMPATHY',allowedSignal,sourceEntity=null,time='UNSET'}){
+  return {evidence_id:stableId('ev'),world_event_ref:eventRef,observer_entity_id:observer,acquired_at:time,channel,source_entity_or_medium:sourceEntity,observability:'PARTIAL',observed_content:allowedSignal,omitted_or_occluded_content:'CAUSE_AND_EXACT_THOUGHT_UNAVAILABLE',uncertainty:null,delay:null,source_preserved:true,common_ground_status:'NONE'};
+}
+
+function canObserverReceiveSceneEvent(runtime,observerId,{remote=false}={}){
+  return runtime.current_scene.present_entities.includes(observerId) || remote;
+}
+
+function resolveEntityIdentity(runtime,{entityId=null,canonicalName=null,aliases=[]}={}){
+  if(entityId){ const e=runtime.entity_registry.find(x=>x.entity_id===entityId); if(e) return e; }
+  const names=new Set([canonicalName,...aliases].filter(Boolean).map(s=>s.toLowerCase()));
+  return runtime.entity_registry.find(e=>[e.canonical_name,...(e.aliases??[])].filter(Boolean).some(n=>names.has(n.toLowerCase()))) ?? null;
+}
+
+function effectiveCharacter({base={},deltas={},current={}}){ return {...base,...deltas,...current}; }
+
+function mergeConflictingSources(a,b){
+  if(JSON.stringify(a)===JSON.stringify(b)) return {status:'RESOLVED',value:deepClone(a)};
+  return {status:'UNKNOWN_CONFLICT',value:null,variants:[deepClone(a),deepClone(b)]};
+}
+
+function evaluateActionFeasibility({intent,scene,capability={}}){
+  const req=intent.requirements??{}; const errors=[];
+  if(req.must_be_present && !scene.present_entities?.includes(intent.actor_entity_id)) errors.push('ACTOR_NOT_PRESENT');
+  if(req.target_must_be_present && !scene.present_entities?.includes(intent.target_entity_id)) errors.push('TARGET_NOT_PRESENT');
+  if(req.required_tool && !(intent.available_tools??[]).includes(req.required_tool)) errors.push('MISSING_TOOL');
+  if(req.required_authority && !(intent.authorities??[]).includes(req.required_authority)) errors.push('MISSING_AUTHORITY');
+  if(req.min_capacity!=null && (capability.capacity??0)<req.min_capacity) errors.push('INSUFFICIENT_CAPACITY');
+  return {available:errors.length===0,errors};
+}
+
+function evaluateAutomaticTrigger(rule,scene){
+  if(!['PASSIVE','AUTOMATIC','CONDITIONAL'].includes(rule.kind)) return null;
+  const ok=typeof rule.condition==='function' ? rule.condition(scene) : Boolean(rule.condition);
+  return ok ? {triggered:true,event_type:rule.event_type,source_rule_id:rule.rule_id} : null;
+}
+
+function evaluateScheduleReminder(schedule,now){
+  if(schedule.status!=='ACTIVE') return null;
+  const due=schedule.due_at==null || schedule.due_at<=now;
+  return due ? {schedule_id:schedule.schedule_id,reevaluate:true,force_action:false} : null;
+}
+
+function selectEventBoundary({hasImmediateInput=false,now='0',scheduled=[]}){
+  if(hasImmediateInput) return {kind:'CURRENT_INPUT',time:now};
+  const active=scheduled.filter(x=>x.status==='ACTIVE').sort((a,b)=>String(a.due_at).localeCompare(String(b.due_at)));
+  return active.length ? {kind:'SCHEDULED',time:active[0].due_at,id:active[0].schedule_id} : {kind:'NONE',time:now};
+}
+
+function proposeOffscreenCandidate({actorId,from,to,cause}){
+  if(cause==='PLAYER_PROXIMITY_ONLY') return {ok:false,error:'PLAYER_CENTERED_TELEPORT'};
+  return {ok:true,delta:{domain:'character_runtime',op:'PATCH',record_id:actorId,value:{location_entity_id:to,previous_location_entity_id:from},source_refs:[`offscreen:${cause}`],event_refs:[]}};
+}
+
+function createPendingTurn(runtime,{turnId=stableId('turn'),parsedPlayerInput={},candidateDeltas=[],narration='',narrationClaims=[],preRender='PASS',postRender='PASS'}={}){
+  return {turn_id:turnId,based_on_revision:runtime.state_revision,status:'OUTPUT_SENT',parsed_player_input:parsedPlayerInput,candidate_deltas:deepClone(candidateDeltas),narration,narration_claims:deepClone(narrationClaims),validation:{pre_render:preRender,post_render:postRender,pre_commit:'NOT_RUN'}};
+}
+
+function recordPrimaryId(domain,record){
+  const candidates={
+    world_state:'world_fact_id',entity_registry:'entity_id',character_runtime:'entity_id',perception_evidence:'evidence_id',knowledge_records:'knowledge_id',memory_records:'memory_id',belief_records:'belief_id',relationships:'relationship_id',commitments:'commitment_id',goals_and_projects:'goal_id',active_events:'event_id',world_processes:'process_id',schedules:'schedule_id',ongoing_actions_and_effects:'effect_id',capability_state:'capability_state_id',calibration:'calibration_id'
+  };
+  return record?.[candidates[domain]] ?? null;
+}
+
+function deepMerge(base,patch){
+  if(Array.isArray(base) || Array.isArray(patch)) return deepClone(patch);
+  if(base && patch && typeof base==='object' && typeof patch==='object'){
+    const out=deepClone(base);
+    for(const [k,v] of Object.entries(patch)){
+      out[k]=(k in out)?deepMerge(out[k],v):deepClone(v);
+    }
+    return out;
+  }
+  return deepClone(patch);
+}
+
+function applyOneDelta(runtime,delta){
+  const collectionName=DOMAIN_TO_COLLECTION[delta.domain];
+  if(!collectionName) throw new Error(`unsupported domain ${delta.domain}`);
+  const arr=runtime[collectionName];
+  if(!Array.isArray(arr)) throw new Error(`domain ${delta.domain} is not an array authority`);
+  const idx=arr.findIndex(x=>recordPrimaryId(delta.domain,x)===delta.record_id);
+  if(delta.op==='DELETE') { if(idx>=0) arr.splice(idx,1); return; }
+  if(delta.op==='UPSERT'){
+    const v=deepClone(delta.value);
+    if(idx>=0) arr[idx]=v; else arr.push(v); return;
+  }
+  if(delta.op==='PATCH'){
+    if(idx<0) throw new Error(`PATCH target missing ${delta.domain}:${delta.record_id}`);
+    arr[idx]=deepMerge(arr[idx],delta.value); return;
+  }
+  throw new Error(`unknown op ${delta.op}`);
+}
+
+function validateRuntime(runtime){
+  const errors=[];
+  const required=['schema_version','session_id','state_revision','simulation_time','world_state','entity_registry','character_runtime','current_scene','perception_evidence','knowledge_records','memory_records','belief_records','relationships','commitments','goals_and_projects','active_events','world_processes','schedules','ongoing_actions_and_effects','capability_state','calibration','commit_log','checkpoint_index','archive_index','audit_state'];
+  for(const k of required) if(runtime[k]===undefined) errors.push(`MISSING_ROOT:${k}`);
+  if(runtime.schema_version!=='2.0') errors.push('BAD_SCHEMA_VERSION');
+  if(!Number.isInteger(runtime.state_revision)||runtime.state_revision<0) errors.push('BAD_REVISION');
+  const entityIds=new Set((runtime.entity_registry??[]).map(e=>e.entity_id));
+  const primaryFields={world_state:'world_fact_id',entity_registry:'entity_id',character_runtime:'entity_id',perception_evidence:'evidence_id',knowledge_records:'knowledge_id',memory_records:'memory_id',belief_records:'belief_id',relationships:'relationship_id',commitments:'commitment_id',goals_and_projects:'goal_id',active_events:'event_id',world_processes:'process_id',schedules:'schedule_id',ongoing_actions_and_effects:'effect_id',capability_state:'capability_state_id',calibration:'calibration_id'};
+  for(const [collection,field] of Object.entries(primaryFields)){
+    const seen=new Set();
+    for(const rec of runtime[collection]??[]){
+      const id=rec?.[field]; if(!id) errors.push(`MISSING_PRIMARY_ID:${collection}`);
+      else if(seen.has(id)) errors.push(`DUPLICATE_PRIMARY_ID:${collection}:${id}`); else seen.add(id);
+    }
+  }
+  for(const k of runtime.knowledge_records??[]){
+    if(!KNOWLEDGE_STATES.has(k.state)) errors.push(`BAD_KNOWLEDGE_STATE:${k.knowledge_id}`);
+    if(k.state!=='UNKNOWN' && !(k.acquisition_refs?.length)) errors.push(`KNOWLEDGE_WITHOUT_SOURCE:${k.knowledge_id}`);
+    if(k.state==='UNKNOWN' && String(k.content_as_actor_understands_it??'').trim()) errors.push(`UNKNOWN_CARRIES_ACTOR_CONTENT:${k.knowledge_id}`);
+    if(k.state==='UNKNOWN' && k.system_truth_ref) errors.push(`UNKNOWN_CARRIES_TRUTH_REF:${k.knowledge_id}`);
+    if(k.owner_entity_id && !entityIds.has(k.owner_entity_id)) errors.push(`KNOWLEDGE_OWNER_MISSING:${k.knowledge_id}:${k.owner_entity_id}`);
+  }
+  for(const r of runtime.relationships??[]){
+    if(!entityIds.has(r.from_entity_id)) errors.push(`REL_FROM_MISSING:${r.relationship_id}`);
+    if(!entityIds.has(r.to_entity_id)) errors.push(`REL_TO_MISSING:${r.relationship_id}`);
+  }
+  for(const c of runtime.commitments??[]){
+    if(c.owner_entity_id && !entityIds.has(c.owner_entity_id)) errors.push(`COMMITMENT_OWNER_MISSING:${c.commitment_id}`);
+    for(const id of c.party_entity_ids??[]) if(!entityIds.has(id)) errors.push(`COMMITMENT_PARTY_MISSING:${c.commitment_id}:${id}`);
+  }
+  for(const id of runtime.current_scene?.present_entities??[]) if(!entityIds.has(id)) errors.push(`SCENE_ENTITY_MISSING:${id}`);
+  const objectLocations=new Map();
+  for(const o of runtime.current_scene?.object_states??[]){
+    const loc=[o.location_entity_id,o.holder_entity_id].filter(Boolean);
+    if(loc.length>1) errors.push(`OBJECT_DOUBLE_PLACEMENT:${o.entity_id}`);
+    if(objectLocations.has(o.entity_id)) errors.push(`OBJECT_DUPLICATE_STATE:${o.entity_id}`);
+    objectLocations.set(o.entity_id,loc[0]??null);
+  }
+  return {pass:errors.length===0,errors};
+}
+
+function validateNarrationClaims(pending,runtime=null){
+  const allowed=new Set();
+  for(const d of pending.candidate_deltas??[]) for(const e of d.event_refs??[]) allowed.add(e);
+  const errors=[];
+  const spoken=new Set(pending.parsed_player_input?.spoken_dialogue??[]);
+  const explicitPrivate=pending.parsed_player_input?.private_player_content;
+  for(const c of pending.narration_claims??[]){
+    if(c.effect_event_ref && !allowed.has(c.effect_event_ref)) errors.push(`NARRATION_UNBACKED_EFFECT:${c.effect_event_ref}`);
+    if(c.claim_type==='PLAYER_DIALOGUE' && !spoken.has(c.content)) errors.push('NARRATION_INVENTED_PLAYER_DIALOGUE');
+    if(c.claim_type==='PLAYER_INTERNAL'){
+      if(explicitPrivate==null || !c.player_explicit_private || String(c.content)!==String(explicitPrivate)) errors.push('NARRATION_INVENTED_PLAYER_INTERNAL');
+    }
+    if(c.claim_type==='CHARACTER_KNOWLEDGE' && runtime){
+      const rec=(runtime.knowledge_records??[]).find(k=>k.knowledge_id===c.knowledge_id && k.owner_entity_id===c.actor_entity_id);
+      const deltaMakesKnown=(pending.candidate_deltas??[]).some(d=>d.domain==='knowledge_records' && d.record_id===c.knowledge_id && d.value?.owner_entity_id===c.actor_entity_id && d.value?.state && d.value.state!=='UNKNOWN');
+      if((!rec || rec.state==='UNKNOWN') && !deltaMakesKnown) errors.push(`NARRATION_KNOWLEDGE_LEAK:${c.actor_entity_id}:${c.knowledge_id}`);
+    }
+    if(c.claim_type==='RELATIONSHIP_STATE_CHANGE'){
+      const backed=(pending.candidate_deltas??[]).some(d=>d.domain==='relationships' && d.record_id===c.relationship_id);
+      if(!backed) errors.push(`NARRATION_UNBACKED_RELATIONSHIP_CHANGE:${c.relationship_id}`);
+    }
+  }
+  return {pass:errors.length===0,errors};
+}
+
+function validatePendingTurn(runtime,pending){
+  const errors=[];
+  if(!pending) errors.push('NO_PENDING_TURN');
+  else {
+    if(pending.based_on_revision!==runtime.state_revision) errors.push('STALE_REVISION');
+    if(pending.validation?.pre_render!=='PASS') errors.push('PRE_RENDER_NOT_PASS');
+    if(pending.validation?.post_render!=='PASS') errors.push('POST_RENDER_NOT_PASS');
+    for(const d of pending.candidate_deltas??[]) if(!(d.source_refs?.length)) errors.push(`DELTA_WITHOUT_PROVENANCE:${d.domain}:${d.record_id}`);
+    const narr=validateNarrationClaims(pending,runtime); errors.push(...narr.errors);
+    const projected=deepClone(runtime);
+    try { for(const d of pending.candidate_deltas??[]) applyOneDelta(projected,d); }
+    catch(e){ errors.push(`DELTA_APPLY:${e.message}`); }
+    const vr=validateRuntime(projected); errors.push(...vr.errors);
+  }
+  return {pass:errors.length===0,errors};
+}
+
+function commitPendingTurn(runtime,pending,{acceptedBy='implicit-next-in-world'}={}){
+  const v=validatePendingTurn(runtime,pending);
+  if(!v.pass) return {ok:false,errors:v.errors,runtime};
+  const next=deepClone(runtime);
+  try {
+    for(const d of pending.candidate_deltas) applyOneDelta(next,d);
+    next.state_revision+=1;
+    next.commit_log.push({commit_id:stableId('commit'),from_revision:runtime.state_revision,to_revision:next.state_revision,turn_id:pending.turn_id,accepted_by:acceptedBy,delta_count:pending.candidate_deltas.length,event_refs:[...new Set((pending.candidate_deltas??[]).flatMap(d=>d.event_refs??[]))],candidate_deltas:deepClone(pending.candidate_deltas)});
+    next.pending_turn=null;
+    next.audit_state.last_validation={stage:'PRE_COMMIT',status:'PASS',turn_id:pending.turn_id};
+    return {ok:true,runtime:next,errors:[]};
+  } catch(e){ return {ok:false,errors:[`ATOMIC_COMMIT_ABORTED:${e.message}`],runtime}; }
+}
+
+function handlePreviousPending(runtime,signal){
+  if(!runtime.pending_turn) return {action:'NONE',runtime};
+  if(signal==='OOC') return {action:'KEEP_PENDING',runtime};
+  if(['CORRECTION','REGENERATE','ROLLBACK'].includes(signal)){
+    const next=deepClone(runtime); next.pending_turn=null; return {action:'REJECTED',runtime:next};
+  }
+  if(['IN_WORLD','SAVE','CHAT_SWITCH'].includes(signal)){
+    const c=commitPendingTurn(runtime,runtime.pending_turn,{acceptedBy:signal});
+    return {action:c.ok?'COMMITTED':'COMMIT_FAILED',runtime:c.runtime,errors:c.errors};
+  }
+  return {action:'KEEP_PENDING',runtime};
+}
+
+function createCheckpoint(runtime,label='checkpoint'){
+  const snap={checkpoint_id:stableId('cp'),label,revision:runtime.state_revision,created_from_session:runtime.session_id,runtime:deepClone({...runtime,pending_turn:null})};
+  return snap;
+}
+
+function restoreCheckpoint(checkpoint){ return deepClone(checkpoint.runtime); }
+
+function eventRefsOfRecord(rec){
+  return [...new Set([
+    ...(rec.event_refs??[]), ...(rec.history_refs??[]), ...(rec.acquisition_refs??[]),
+    rec.world_event_reference, rec.raw_event_reference, rec.created_by_event
+  ].filter(Boolean))];
+}
+
+function rollbackContaminated(runtime,{eventRefs=[],reason='AI_ERROR'}={}){
+  const bad=new Set(eventRefs); const next=deepClone(runtime); let changed=false;
+  for(const [domain,collection] of Object.entries(DOMAIN_TO_COLLECTION)){
+    const out=[];
+    for(const original of next[collection]){
+      let rec=deepClone(original);
+      const refs=eventRefsOfRecord(rec);
+      const hit=refs.filter(r=>bad.has(r));
+      if(hit.length===0){ out.push(rec); continue; }
+      // Event-owned records are removed. Multi-history aggregate records keep
+      // independent history and merely drop contaminated references.
+      if(rec.created_by_event && bad.has(rec.created_by_event)){ changed=true; continue; }
+      if(rec.world_event_reference && bad.has(rec.world_event_reference)){ changed=true; continue; }
+      if(rec.raw_event_reference && bad.has(rec.raw_event_reference)){ changed=true; continue; }
+      if(Array.isArray(rec.event_refs)){ rec.event_refs=rec.event_refs.filter(x=>!bad.has(x)); changed=true; if(rec.event_refs.length===0 && domain!=='relationships') continue; }
+      if(Array.isArray(rec.acquisition_refs)){ rec.acquisition_refs=rec.acquisition_refs.filter(x=>!bad.has(x)); changed=true; if(rec.acquisition_refs.length===0 && domain==='knowledge_records') continue; }
+      if(Array.isArray(rec.history_refs)){ rec.history_refs=rec.history_refs.filter(x=>!bad.has(x)); changed=true; }
+      out.push(rec);
+    }
+    next[collection]=out;
+  }
+  next.audit_state.invalidated_event_refs=[...new Set([...(next.audit_state.invalidated_event_refs??[]),...eventRefs])];
+  if(changed){
+    const from=next.state_revision; next.state_revision+=1;
+    next.commit_log.push({commit_id:stableId('rollback'),from_revision:from,to_revision:next.state_revision,turn_id:null,accepted_by:'ROLLBACK',delta_count:0,event_refs:[...eventRefs],rollback_reason:reason});
+  }
+  return next;
+}
+
+function buildHandover(runtime){
+  return {
+    session_id:runtime.session_id, state_revision:runtime.state_revision,
+    world_time:runtime.simulation_time.current_world_datetime,
+    current_scene:deepClone(runtime.current_scene), exact_handoff:runtime.current_scene.exact_handoff,
+    relevant_character_states:deepClone(runtime.character_runtime),
+    relationship_refs:runtime.relationships.map(r=>r.relationship_id),
+    knowledge_refs:runtime.knowledge_records.map(k=>k.knowledge_id),
+    commitment_refs:runtime.commitments.map(c=>c.commitment_id),
+    active_event_refs:runtime.active_events.filter(e=>e.status==='ACTIVE').map(e=>e.event_id),
+    active_world_process_refs:runtime.world_processes.filter(e=>e.status==='ACTIVE').map(e=>e.process_id),
+    unresolved_items:[...(runtime.current_scene.unresolved_dialogue_threads??[])],
+    archive_index:deepClone(runtime.archive_index)
+  };
+}
+
+function migrateNormalizedLegacySave(normalized){
+  const rt=createEmptyRuntime({sessionId:normalized.session_id??'AETHERGARD-CURRENT',revision:normalized.state_revision??1,worldTime:normalized.world_time??'UNSET'});
+  for(const key of ['active_rule_sources','source_registry','world_state','entity_registry','character_runtime','perception_evidence','knowledge_records','memory_records','belief_records','relationships','commitments','goals_and_projects','active_events','world_processes','schedules','ongoing_actions_and_effects','capability_state','calibration','checkpoint_index','archive_index']) if(normalized[key]) rt[key]=deepClone(normalized[key]);
+  if(normalized.current_scene) rt.current_scene=deepClone(normalized.current_scene);
+  rt.audit_state={...(rt.audit_state??{}),migration:{source:'normalized-legacy-save',status:'MIGRATED_NOT_YET_STRESS_TESTED'}};
+  return rt;
+}
+
+return {
+  KNOWLEDGE_STATES,
+  REL_STATUS,
+  DOMAIN_TO_COLLECTION,
+  deepClone,
+  stableId,
+  createEmptyRuntime,
+  parsePlayerInput,
+  classifyPlayerNonspoken,
+  makeKnowledgeRecord,
+  compactMemory,
+  getDirectionalRelationship,
+  visibleWorldConstraintsFor,
+  actorSafeKnowledgeView,
+  actorSafeEvidenceView,
+  actorSafeMemoryView,
+  actorSafeRelationshipView,
+  buildPrivateCharacterPacket,
+  routeSpecialSense,
+  canObserverReceiveSceneEvent,
+  resolveEntityIdentity,
+  effectiveCharacter,
+  mergeConflictingSources,
+  evaluateActionFeasibility,
+  evaluateAutomaticTrigger,
+  evaluateScheduleReminder,
+  selectEventBoundary,
+  proposeOffscreenCandidate,
+  createPendingTurn,
+  validateRuntime,
+  validateNarrationClaims,
+  validatePendingTurn,
+  commitPendingTurn,
+  handlePreviousPending,
+  createCheckpoint,
+  restoreCheckpoint,
+  rollbackContaminated,
+  buildHandover,
+  migrateNormalizedLegacySave
+};
+})();
+
+const DB_NAME='aethergard-controller-v22'; const STORE='kv'; const RUNTIME_KEY='runtime'; const CPS_KEY='checkpoints';
+let runtime=null, checkpoints=[], parsed=null, classified=null, currentPacket=null, currentRequest=null;
+const $=s=>document.querySelector(s); const $$=s=>[...document.querySelectorAll(s)];
+
+function esc(s){return String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));}
+function pretty(x){return JSON.stringify(x,null,2)}
+function statusBox(msg,kind='good'){return `<div class="notice ${kind}">${esc(msg)}</div>`}
+function entityName(id){return runtime?.entity_registry?.find(e=>e.entity_id===id)?.canonical_name ?? id ?? '未知'}
+
+function db(){return new Promise((res,rej)=>{const q=indexedDB.open(DB_NAME,1);q.onupgradeneeded=()=>q.result.createObjectStore(STORE);q.onsuccess=()=>res(q.result);q.onerror=()=>rej(q.error);});}
+async function getKV(k){const d=await db();return new Promise((res,rej)=>{const tx=d.transaction(STORE,'readonly');const q=tx.objectStore(STORE).get(k);q.onsuccess=()=>res(q.result);q.onerror=()=>rej(q.error);});}
+async function setKV(k,v){const d=await db();return new Promise((res,rej)=>{const tx=d.transaction(STORE,'readwrite');tx.objectStore(STORE).put(v,k);tx.oncomplete=()=>res();tx.onerror=()=>rej(tx.error);});}
+async function delKV(k){const d=await db();return new Promise((res,rej)=>{const tx=d.transaction(STORE,'readwrite');tx.objectStore(STORE).delete(k);tx.oncomplete=()=>res();tx.onerror=()=>rej(tx.error);});}
+
+async function save(){if(runtime) await setKV(RUNTIME_KEY,runtime); await setKV(CPS_KEY,checkpoints); render();}
+function downloadJSON(name,obj){const blob=new Blob([pretty(obj)],{type:'application/json'});const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download=name;document.body.append(a);a.click();setTimeout(()=>{URL.revokeObjectURL(a.href);a.remove()},500)}
+async function shareJSON(name,obj){const file=new File([pretty(obj)],name,{type:'application/json'});if(navigator.canShare?.({files:[file]})){await navigator.share({files:[file],title:name});}else downloadJSON(name,obj)}
+async function copyText(text){await navigator.clipboard.writeText(text)}
+async function shareText(text,title='Aethergard Turn Request'){if(navigator.share) await navigator.share({title,text}); else await copyText(text)}
+
+function runtimeValid(){return runtime?Core.validateRuntime(runtime):{pass:false,errors:['NO_RUNTIME']}}
+function sceneLoc(){return entityName(runtime?.current_scene?.location_entity_id)}
+function render(){
+  const vr=runtimeValid();
+  const metrics=[['Revision',runtime?`rev ${runtime.state_revision}`:'未載入'],['世界時間',runtime?.simulation_time?.current_world_datetime??'未載入'],['地點',runtime?sceneLoc():'未載入'],['Pending',runtime?.pending_turn?'等待接受':'無']];
+  $('#metrics').innerHTML=metrics.map(([l,v])=>`<div class="card metric"><div class="label">${esc(l)}</div><div class="value">${esc(v)}</div></div>`).join('');
+  $('#runtimeHealth').textContent=vr.pass?'Runtime PASS':runtime?'Runtime FAIL':'尚未載入'; $('#runtimeHealth').className='pill '+(vr.pass?'status-good':runtime?'status-bad':'');
+  $('#handoff').innerHTML=runtime?esc(runtime.current_scene?.exact_handoff||'無精確承接點'): '請先到「匯入／備份」載入你的 Runtime。';
+  const present=(runtime?.current_scene?.present_entities??[]).map(entityName).join('、')||'無';
+  $('#sceneSummary').innerHTML=runtime?`<div class="k">在場</div><div>${esc(present)}</div><div class="k">未完對話</div><div>${esc((runtime.current_scene?.unresolved_dialogue_threads??[]).join('；')||'無')}</div><div class="k">有效事件</div><div>${esc((runtime.active_events??[]).filter(e=>e.status==='ACTIVE').map(e=>e.event_id).join('、')||'無')}</div>`:'';
+  $('#pendingPill').textContent=runtime?.pending_turn?`Pending ${runtime.pending_turn.turn_id}`:'無 Pending';
+  $('#revisionPill').textContent=runtime?`rev ${runtime.state_revision}`:'rev ?';
+  renderActors(); renderCollections(); renderState(); renderHistory();
+}
+
+function renderActors(){const sel=$('#actorSelect'); const before=sel.value; sel.innerHTML=(runtime?.entity_registry??[]).filter(e=>(runtime.character_runtime??[]).some(c=>c.entity_id===e.entity_id)).map(e=>`<option value="${esc(e.entity_id)}">${esc(e.canonical_name)}</option>`).join(''); if([...sel.options].some(o=>o.value===before))sel.value=before;}
+function renderCollections(){const keys=['world_state','entity_registry','character_runtime','current_scene','perception_evidence','knowledge_records','memory_records','belief_records','relationships','commitments','goals_and_projects','active_events','world_processes','schedules','ongoing_actions_and_effects','capability_state','calibration','commit_log','audit_state'];const s=$('#stateCollection');if(!s.options.length)s.innerHTML=keys.map(k=>`<option>${k}</option>`).join('');}
+function renderState(){const k=$('#stateCollection')?.value||'world_state';$('#statePreview').textContent=runtime?pretty(runtime[k]):'尚未載入。';}
+function renderHistory(){if(!runtime){$('#historyList').innerHTML=statusBox('尚未載入 Runtime','warn');return} const commits=(runtime.commit_log??[]).slice(-12).reverse().map(c=>`<div class="item"><b>${esc(c.accepted_by||'COMMIT')}</b> rev ${esc(c.from_revision)} → ${esc(c.to_revision)}<br><span class="small">${esc(c.turn_id||'')} ${esc((c.event_refs??[]).join(', '))}</span></div>`);const cps=checkpoints.slice().reverse().map((c,i)=>`<div class="item"><b>Checkpoint</b> ${esc(c.label)} • rev ${esc(c.revision)} <button data-restore-cp="${esc(c.checkpoint_id)}" style="float:right;padding:4px 7px;font-size:11px">還原</button></div>`);$('#historyList').innerHTML=[...cps,...commits].join('')||'<div class="small">尚無歷史。</div>';$$('[data-restore-cp]').forEach(b=>b.onclick=async()=>{if(!confirm('確定還原此 Checkpoint？目前 Runtime 會被取代。'))return;const cp=checkpoints.find(c=>c.checkpoint_id===b.dataset.restoreCp);runtime=Core.restoreCheckpoint(cp);await save();});}
+
+function handlePriorSignal(signal){if(!runtime?.pending_turn)return {ok:true};const r=Core.handlePreviousPending(runtime,signal);runtime=r.runtime;if(r.action==='COMMIT_FAILED')return {ok:false,errors:r.errors};return {ok:true,action:r.action};}
+function parseInput(){if(!runtime){$('#parseResult').classList.remove('hidden');$('#nonspokenWarning').innerHTML='請先匯入 Runtime。';return} const raw=$('#playerInput').value; const signal=$('#turnSignal').value; const prior=handlePriorSignal(signal); if(!prior.ok){$('#candidateStatus').innerHTML=statusBox(`上一回 Commit 失敗：${prior.errors.join(' | ')}`,'bad');return} parsed=Core.parsePlayerInput(raw,runtime.player_contract?.spoken_delimiters??['「','」']);$('#parseResult').classList.remove('hidden');$('#requestArea').classList.add('hidden');$('#observableAction').value='';$('#privateContent').value='';$('#oocContent').value=signal==='OOC'?parsed.outside_quotes:'';const spoken=parsed.spoken_dialogue.length?`說出口：${parsed.spoken_dialogue.map(x=>`「${x}」`).join(' / ')}`:'沒有偵測到「」內台詞';const outside=parsed.outside_quotes?`「」外有內容，預設不給 NPC：${parsed.outside_quotes}`:'「」外沒有內容。';$('#nonspokenWarning').textContent=`${spoken}。${outside}`; save();}
+function finishClassification(){if(!parsed||!runtime)return; classified=Core.classifyPlayerNonspoken(parsed,{observableAction:$('#observableAction').value,privateContent:$('#privateContent').value||null,ooc:$('#oocContent').value||null}); currentRequest={protocol:'AETHERGARD_CONTROLLER_BRIDGE_V2.2',based_on_revision:runtime.state_revision,world_time:runtime.simulation_time.current_world_datetime,exact_handoff:runtime.current_scene.exact_handoff,signal:$('#turnSignal').value,player_input:classified,required_output:{format:'JSON_ONLY',fields:['narration','candidate_deltas','narration_claims','validation'],rules:['candidate_deltas must carry source_refs','validation.pre_render and validation.post_render must be PASS only after actual checks','do not commit; Controller validates and stages Pending']},actor_packet_note:'Use Controller-provided actor-safe packets for NPC decisions; UNKNOWN truth is not permission to infer.'};$('#requestPreview').textContent=pretty(currentRequest);$('#requestArea').classList.remove('hidden');}
+function validateCandidate(){if(!runtime||!classified){$('#candidateStatus').innerHTML=statusBox('請先完成玩家輸入解析與分類。','warn');return}let env;try{env=JSON.parse($('#candidateInput').value)}catch(e){$('#candidateStatus').innerHTML=statusBox(`JSON 無法解析：${e.message}`,'bad');return}const pending=Core.createPendingTurn(runtime,{parsedPlayerInput:classified,candidateDeltas:env.candidate_deltas??[],narration:env.narration??'',narrationClaims:env.narration_claims??[],preRender:env.validation?.pre_render??'NOT_RUN',postRender:env.validation?.post_render??'NOT_RUN'});const v=Core.validatePendingTurn(runtime,pending);if(!v.pass){$('#candidateStatus').innerHTML=statusBox(`FAIL：${v.errors.join(' | ')}`,'bad');return}runtime.pending_turn=pending;$('#candidateStatus').innerHTML=statusBox('PASS：已建立 Pending Turn。尚未 Commit；你下一則世界內 RP 輸入時會自動接受上一回。','good');save();}
+
+function buildPacket(){if(!runtime){$('#packetPreview').textContent='請先匯入 Runtime。';return}const actor=$('#actorSelect').value;if(!actor)return;currentPacket=Core.buildPrivateCharacterPacket(runtime,actor,{playerParsed:classified,allowPlayerPrivate:false});$('#packetPreview').textContent=pretty(currentPacket);}
+
+$('#tabs').onclick=e=>{const b=e.target.closest('[data-tab]');if(!b)return;$$('#tabs button').forEach(x=>x.classList.toggle('active',x===b));$$('.tab').forEach(x=>x.classList.remove('active'));$(`#tab-${b.dataset.tab}`).classList.add('active');}
+$('#stateCollection').onchange=renderState;
+$('#parseBtn').onclick=parseInput;$('#clearTurnBtn').onclick=()=>{$('#playerInput').value='';$('#candidateInput').value='';$('#parseResult').classList.add('hidden');$('#requestArea').classList.add('hidden');parsed=classified=currentRequest=null;};
+$('#allPrivateBtn').onclick=()=>{$('#privateContent').value=parsed?.outside_quotes??'';$('#observableAction').value='';};$('#allObservableBtn').onclick=()=>{$('#observableAction').value=parsed?.outside_quotes??'';$('#privateContent').value='';};$('#classifyBtn').onclick=finishClassification;
+$('#copyRequestBtn').onclick=async()=>{if(currentRequest){await copyText(pretty(currentRequest));$('#copyRequestBtn').textContent='已複製';setTimeout(()=>$('#copyRequestBtn').textContent='複製 Request',1200)}};$('#shareRequestBtn').onclick=()=>currentRequest&&shareText(pretty(currentRequest));
+$('#validateCandidateBtn').onclick=validateCandidate;$('#rejectPendingBtn').onclick=async()=>{if(runtime?.pending_turn){runtime.pending_turn=null;await save();$('#candidateStatus').innerHTML=statusBox('Pending 已丟棄。','warn')}};
+$('#buildPacketBtn').onclick=buildPacket;$('#copyPacketBtn').onclick=()=>currentPacket&&copyText(pretty(currentPacket));
+$('#checkpointBtn').onclick=async()=>{if(!runtime)return;const label=prompt('Checkpoint 名稱',`rev-${runtime.state_revision}`)||`rev-${runtime.state_revision}`;const cp=Core.createCheckpoint(runtime,label);checkpoints.push(cp);runtime.checkpoint_index=runtime.checkpoint_index??[];runtime.checkpoint_index.push({checkpoint_id:cp.checkpoint_id,label:cp.label,revision:cp.revision});await save();};
+$('#exportHandoverBtn').onclick=()=>runtime&&downloadJSON(`Aethergard_Handover_rev${runtime.state_revision}.json`,Core.buildHandover(runtime));
+$('#rollbackBtn').onclick=async()=>{if(!runtime)return;const refs=$('#rollbackRefs').value.split(',').map(s=>s.trim()).filter(Boolean);if(!refs.length){$('#rollbackStatus').innerHTML=statusBox('請輸入至少一個 event ref。','warn');return}if(!confirm(`確定讓 ${refs.join(', ')} 失效並建立新的 rollback revision？`))return;runtime=Core.rollbackContaminated(runtime,{eventRefs:refs,reason:'USER_CONFIRMED_ERROR'});$('#rollbackStatus').innerHTML=statusBox(`已建立 rev ${runtime.state_revision}。`,'good');await save();};
+$('#importRuntimeBtn').onclick=async()=>{const f=$('#runtimeFile').files?.[0];if(!f){$('#importStatus').innerHTML=statusBox('請先選 JSON。','warn');return}try{const x=JSON.parse(await f.text());const v=Core.validateRuntime(x);if(!v.pass){$('#importStatus').innerHTML=statusBox(`拒絕匯入：${v.errors.join(' | ')}`,'bad');return}runtime=x;await save();$('#importStatus').innerHTML=statusBox(`已匯入 ${f.name}，rev ${runtime.state_revision}。`,'good')}catch(e){$('#importStatus').innerHTML=statusBox(`匯入失敗：${e.message}`,'bad')}};
+$('#exportRuntimeBtn').onclick=()=>runtime&&downloadJSON(`Aethergard_Runtime_v2_CURRENT_rev${runtime.state_revision}.json`,runtime);$('#shareRuntimeBtn').onclick=()=>runtime&&shareJSON(`Aethergard_Runtime_v2_CURRENT_rev${runtime.state_revision}.json`,runtime);$('#validateRuntimeBtn').onclick=()=>{const v=runtimeValid();$('#importStatus').innerHTML=statusBox(v.pass?'Runtime PASS':`Runtime FAIL：${v.errors.join(' | ')}`,v.pass?'good':'bad')};
+$('#wipeBtn').onclick=async()=>{if(!confirm('確定清除這個網站在 Safari 裡保存的艾瑟加德 Runtime 與 Checkpoints？請先備份。'))return;runtime=null;checkpoints=[];await delKV(RUNTIME_KEY);await delKV(CPS_KEY);render();};
+
+(async()=>{runtime=await getKV(RUNTIME_KEY).catch(()=>null);checkpoints=await getKV(CPS_KEY).catch(()=>[])||[];render();})();
+
+</script>
+</body></html>
