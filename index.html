@@ -8,8 +8,8 @@
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
   <meta name="apple-mobile-web-app-title" content="艾瑟加德 Controller" />
   <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; connect-src 'self'; object-src 'none'; base-uri 'self'; form-action 'self'">
-<title>艾瑟加德 RP Controller v2.3</title>
-  <style>
+<title>艾瑟加德 RP Controller v3.2</title>
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 32 32%27%3E%3Crect width=%2732%27 height=%2732%27 rx=%277%27 fill=%27%23201b35%27/%3E%3Cpath d=%27M8 7h16v18H8zM16 7v18%27 fill=%27none%27 stroke=%27%23cbb8fa%27 stroke-width=%272%27/%3E%3C/svg%3E"><style>
     :root{color-scheme:dark;--bg:#0b1020;--panel:#111827;--panel2:#172033;--line:#2b3953;--text:#eef2ff;--muted:#a7b0c3;--good:#4ade80;--warn:#fbbf24;--bad:#fb7185;--accent:#a78bfa;--accent2:#7dd3fc}
     *{box-sizing:border-box} body{margin:0;background:linear-gradient(180deg,#0b1020,#0c1428 70%,#0b1020);color:var(--text);font-family:-apple-system,BlinkMacSystemFont,"SF Pro Text","PingFang TC","Noto Sans TC",sans-serif;min-height:100vh}
     header{position:sticky;top:0;z-index:5;background:rgba(11,16,32,.94);backdrop-filter:blur(16px);border-bottom:1px solid var(--line);padding:max(12px,env(safe-area-inset-top)) 16px 12px}
@@ -22,7 +22,7 @@
     button,.btn{appearance:none;border:1px solid var(--line);background:#1f2a44;color:var(--text);border-radius:11px;padding:10px 12px;font-weight:650;font-size:14px;cursor:pointer}button:active{transform:translateY(1px)}button.primary{background:#5b46a8;border-color:#7c68cf}button.good{background:#175c38;border-color:#2d8d58}button.warn{background:#6d4a13;border-color:#a8751b}button.bad{background:#6e2634;border-color:#a83b50}button.ghost{background:transparent}
     .row{display:flex;gap:8px;flex-wrap:wrap}.row>*{flex:0 0 auto}.grow{flex:1 1 220px}.toolbar{display:flex;gap:8px;flex-wrap:wrap}
     textarea,input,select{width:100%;border:1px solid var(--line);background:#0b1325;color:var(--text);border-radius:12px;padding:11px 12px;font-size:15px;outline:none}textarea{min-height:110px;resize:vertical;line-height:1.5}input:focus,textarea:focus,select:focus{border-color:var(--accent)}
-    label{display:block;font-size:12px;color:var(--muted);margin:10px 0 6px}.small{font-size:12px;color:var(--muted);line-height:1.45}.mono{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:12px;white-space:pre-wrap;word-break:break-word;background:#09101e;border:1px solid var(--line);border-radius:12px;padding:10px;max-height:320px;overflow:auto}
+    label{display:block;font-size:14px;color:var(--muted);margin:10px 0 6px}.small{font-size:14px;color:var(--muted);line-height:1.45}.mono{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:12px;white-space:pre-wrap;word-break:break-word;background:#09101e;border:1px solid var(--line);border-radius:12px;padding:10px;max-height:320px;overflow:auto}
     .status-good{color:var(--good)}.status-warn{color:var(--warn)}.status-bad{color:var(--bad)}.accent{color:var(--accent2)}
     details{border-top:1px solid var(--line);padding-top:10px;margin-top:10px}summary{cursor:pointer;color:#d8def0;font-weight:650}.hidden{display:none!important}
     nav{display:flex;gap:7px;overflow:auto;padding:0 0 10px;scrollbar-width:none}nav button{white-space:nowrap;padding:8px 11px;font-size:12px;background:#121c31}nav button.active{background:#4c3c8b;border-color:#7c68cf}
@@ -33,14 +33,12 @@
   </style>
 </head>
 <body>
-<header><h1>艾瑟加德 RP Controller <span class="accent">v2.4</span></h1><p>iPhone Safari 單檔版｜v1.11 增量存檔｜私人 Packs｜不連外</p></header>
-<main>
+<header><h1>艾瑟加德 RP Controller <span class="accent">v3.2.1</span></h1><p>維護／備援控制台｜正常 RP 只在 ChatGPT Project 進行</p></header>
+<main><div class="notice good" style="margin-bottom:14px"><b>正常遊玩只在 ChatGPT 的《艾瑟加德》Project 聊天室。</b><br>這個 GitHub Pages 頁面只做備份、檢視、匯入與維護，不再要求你把每回合內容在兩邊複製貼上。本機資料不會自行上傳。<br><b>注意：這個本機備援頁不會自動同步或改寫 Project 內正在使用的 Live Controller。</b></div>
   <div class="grid topgrid" id="metrics"></div>
   <div style="height:12px"></div>
   <nav id="tabs">
     <button data-tab="home" class="active">總覽</button>
-    <button data-tab="turn">本回合</button>
-    <button data-tab="packet">角色封包</button>
     <button data-tab="state">狀態檢視</button>
     <button data-tab="history">版本／回滾</button>
     <button data-tab="saveengine">存檔引擎</button>
@@ -88,7 +86,7 @@
     <div style="height:12px"></div>
     <div class="card">
       <div class="section-title"><h2>③ 貼回 ChatGPT Candidate Envelope</h2><span class="pill">先驗證，不立即 Commit</span></div>
-      <textarea id="candidateInput" placeholder='貼 JSON：{"narration":"...","candidate_deltas":[],"narration_claims":[],"validation":{"pre_render":"PASS","post_render":"PASS"}}'></textarea>
+      <textarea id="candidateInput" placeholder="依本回合請求的 candidate_schema 貼上 JSON。"></textarea>
       <div class="toolbar"><button id="validateCandidateBtn" class="primary">驗證並建立 Pending</button><button id="rejectPendingBtn" class="bad">丟棄 Pending</button></div>
       <div id="candidateStatus" style="margin-top:10px"></div>
     </div>
@@ -111,12 +109,12 @@
 
   <section id="tab-history" class="tab">
     <div class="card"><div class="section-title"><h2>版本與檢查點</h2><span class="pill" id="revisionPill">rev ?</span></div>
-      <div class="toolbar"><button id="checkpointBtn" class="good">建立 Checkpoint</button><button id="exportHandoverBtn">匯出 Handover</button></div>
+      <div class="toolbar"><button id="checkpointBtn" class="good">建立 Checkpoint</button><button id="exportHandoverBtn">下載完整備份（可搬家）</button></div>
       <div id="historyList" class="list" style="margin-top:12px"></div>
     </div>
     <div style="height:12px"></div>
-    <div class="card danger-zone"><div class="section-title"><h2>事件污染回滾</h2><span class="pill">只撤指定因果</span></div>
-      <label>要失效的 event refs，逗號分隔</label><input id="rollbackRefs" placeholder="event-xxx, event-yyy" />
+    <div class="card danger-zone"><div class="section-title"><h2>回到指定版本</h2><span class="pill">保留回滾前快照</span></div>
+      <label>要回到的 Revision 數字</label><input id="rollbackRefs" placeholder="例如：1" type="number" min="0" />
       <div class="toolbar" style="margin-top:10px"><button id="rollbackBtn" class="bad">建立 Rollback Revision</button></div>
       <div id="rollbackStatus" style="margin-top:10px"></div>
     </div>
@@ -125,10 +123,10 @@
 
   <section id="tab-saveengine" class="tab">
     <div class="card">
-      <div class="section-title"><h2>v1.11 增量存檔引擎</h2><span class="pill">每輪只寫 Delta</span></div>
-      <div class="notice good">正常 RP Commit 只追加 Delta Journal 並更新 CURRENT。角色卡／劇情事件總檔不會因每一回合而整份重寫。</div>
+      <div class="section-title"><h2>v1.11 增量存檔引擎</h2><span class="pill">回合增量記錄</span></div>
+      <div class="notice good">正常 RP Commit 只追加 Delta Journal 並更新 CURRENT。角色卡／劇情事件總檔不會因每一回合而整份重寫。v3.2.1 每次保存會自動刪除不再被 CURRENT／Packs／Journal／Archive／Checkpoint 引用的技術區塊，並把已處理訊息去重表限制在最近 128 筆。新建 Checkpoint 不再複製六份 Packs；還原／回滾／匯入前的自動快照只保留最近有限筆，避免備援本身越存越肥。Delta Journal 與 Cold Archive 是正式劇情歷史，不會被當技術垃圾刪除。</div>
       <div id="saveEngineMetrics" class="kv" style="margin-top:12px"></div>
-      <div class="toolbar" style="margin-top:12px"><button id="quickCheckpointBtn" class="good">快速 Checkpoint</button><button id="fullBackupBtn" class="primary">下載完整備份包</button><button id="handoverSaveBtn">匯出 Handover</button></div>
+      <div class="toolbar" style="margin-top:12px"><button id="quickCheckpointBtn" class="good">快速 Checkpoint</button><button id="fullBackupBtn" class="primary">下載完整備份包</button><button id="handoverSaveBtn">下載完整備份（可搬家）</button></div>
     </div>
     <div style="height:12px"></div>
     <div class="card">
@@ -150,15 +148,15 @@
   <section id="tab-packs" class="tab">
     <div class="card">
       <div class="section-title"><h2>私人資料 Packs</h2><span class="pill" id="packHealth">0 / 6</span></div>
-      <div class="notice good">這六份 Pack 只存進此網站在 Safari 的 IndexedDB，不會寫進公開 <code>index.html</code>，也不會上傳到 GitHub。新版 Pack 匯入同一槽位時會直接取代舊版。</div>
+      <div class="notice good">這六份 Pack 只存進此網站在 Safari 的 IndexedDB，不會寫進公開 <code>index.html</code>，也不會上傳到 GitHub。新版資料包會核對內容雜湊；有未完成回合時不允許替換規則。<br><b>這裡更新的是本機備援副本，不會自動更新 Project 的 Live Controller。</b></div>
       <label>一次可選一份或多份 JSON</label>
       <input type="file" id="packFiles" accept="application/json,.json" multiple />
       <div class="toolbar" style="margin-top:10px">
-        <button id="importPacksBtn" class="primary">匯入／更新 Packs</button>
+        <button id="importPacksBtn" class="primary">匯入／更新本機備援 Packs</button>
         <button id="exportPackManifestBtn">下載 Pack Manifest</button>
       </div>
       <div id="packImportStatus" style="margin-top:10px"></div>
-      <div id="packList" class="list" style="margin-top:12px"></div>
+      <label>本回合規則檢索</label><input id="packQuery" placeholder="人物、能力、制度或事件關鍵字"><button id="searchPacksBtn" style="margin:10px 0">讀取相關規則</button><pre id="packSearchResults" class="mono"></pre><div id="packList" class="list" style="margin-top:12px"></div>
       <details><summary>這裡存哪六份？</summary>
         <p class="small">World Canon、Core Rules、Presentation、Character Design、Character Inspiration、Save Engine Policy。Runtime／Journal／Archive 仍是另一套本局活資料，不會塞進 Packs。</p>
       </details>
@@ -171,19 +169,19 @@
   </section>
 
   <section id="tab-settings" class="tab">
-    <div class="card"><div class="section-title"><h2>Runtime 匯入／備份</h2><span class="pill">資料留在 Safari</span></div>
+    <div class="card"><div class="section-title"><h2>Runtime 匯入／備份</h2><span class="pill">資料留在 Safari</span></div><div class="notice warn">這裡匯入或還原的 Runtime 只影響 Safari 本機備援，不會同步到 Project 的 Live Controller。正常 RP 不需要在這裡匯入每一回合。</div>
       <input type="file" id="runtimeFile" accept="application/json,.json" />
       <div class="toolbar" style="margin-top:10px"><button id="importRuntimeBtn" class="primary">匯入 Runtime</button><button id="exportRuntimeBtn" class="good">下載 CURRENT</button><button id="shareRuntimeBtn">分享 CURRENT</button><button id="validateRuntimeBtn">重新驗證</button></div>
       <div id="importStatus" style="margin-top:10px"></div>
-      <details><summary>部署安全提醒</summary><p class="small">GitHub Pages 只上傳這個套件的 <code>public/</code>。不要把你的 Runtime JSON、搬家存檔、角色卡或事件總檔放進公開 Repository。網站程式是公開殼，劇情資料留在 Safari。</p></details>
+      <details><summary>部署安全提醒</summary><p class="small">GitHub Pages 只放控制台程式。不要把 Runtime JSON、搬家存檔、角色卡、事件總檔或任何私密 RP 資料放進公開 Repository。正常 RP 不需要打開本頁；本頁只在備份、檢視、匯入或維護時使用。</p></details>
     </div>
     <div style="height:12px"></div>
-    <div class="card danger-zone"><div class="section-title"><h2>清除本機資料</h2><span class="pill">不可復原</span></div><button id="wipeBtn" class="bad">清除 Safari 內的 Runtime／Journal／Archive／Checkpoints</button></div>
+    <div class="card danger-zone"><div class="section-title"><h2>清除本機資料</h2><span class="pill">原版資料與下載備份保留</span></div><button id="wipeBtn" class="bad">重設目前存檔並下載備份</button></div>
   </section>
-  <div class="footer">Aethergard Controller v2.4 • static / private packs / no API / no telemetry</div>
+  <div class="footer">Aethergard Controller v3.2.1 • maintenance mirror / local storage / no telemetry</div>
 </main>
-<script>
-const Core = (() => {
+<script type="module">
+const LegacyCore = (() => {
 const KNOWLEDGE_STATES = new Set(['KNOWN','PARTIAL','SUSPECTED','BELIEVED','MISUNDERSTOOD','DENIED','UNKNOWN']);
 const REL_STATUS = new Set(['ACTIVE','ENDED','INVALIDATED','SUPERSEDED','UNKNOWN_CONFLICT']);
 const DOMAIN_TO_COLLECTION = {
@@ -752,172 +750,338 @@ return {
 };
 })();
 
-const DB_NAME='aethergard-controller-v22'; const STORE='kv'; const RUNTIME_KEY='runtime'; const CPS_KEY='checkpoints'; const JOURNAL_KEY='delta-journal'; const ARCHIVE_KEY='cold-archive'; const PACKS_KEY='private-packs-v1';
-let runtime=null, checkpoints=[], journal=[], coldArchive=[], privatePacks={}, parsed=null, classified=null, currentPacket=null, currentRequest=null;
 
-const PACK_SLOTS=[
-  {slot:'WORLD_CANON',label:'World Canon',types:['WORLD_CANON'],schema:'aethergard.world_canon_pack'},
-  {slot:'CORE_RULES',label:'Core Rules',types:['CORE_RULES']},
-  {slot:'PRESENTATION',label:'Presentation',types:['AETHERGARD_PRESENTATION_PACK']},
-  {slot:'CHARACTER_DESIGN',label:'Character Design',types:['CHARACTER_DESIGN_RULES']},
-  {slot:'CHARACTER_INSPIRATION',label:'Character Inspiration',types:['CHARACTER_INSPIRATION_REFERENCE']},
-  {slot:'SAVE_ENGINE_POLICY',label:'Save Engine Policy',types:['SAVE_ENGINE_POLICY']}
-];
-const $=s=>document.querySelector(s); const $$=s=>[...document.querySelectorAll(s)];
 
-function esc(s){return String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));}
-function pretty(x){return JSON.stringify(x,null,2)}
-function statusBox(msg,kind='good'){return `<div class="notice ${kind}">${esc(msg)}</div>`}
-function entityName(id){return runtime?.entity_registry?.find(e=>e.entity_id===id)?.canonical_name ?? id ?? '未知'}
 
-function detectPackSlot(x){
-  if(!x||typeof x!=='object') return null;
-  if(x.schema==='aethergard.world_canon_pack') return 'WORLD_CANON';
-  const t=x.pack_type;
-  for(const s of PACK_SLOTS) if((s.types||[]).includes(t)) return s.slot;
-  return null;
+const VERSION='3.2.1';
+const SLOTS=['WORLD_CANON','CORE_RULES','PRESENTATION','CHARACTER_DESIGN','CHARACTER_INSPIRATION','SAVE_ENGINE_POLICY'];
+const TYPES={WORLD_CANON:'WORLD_CANON',CORE_RULES:'CORE_RULES',AETHERGARD_PRESENTATION_PACK:'PRESENTATION',CHARACTER_DESIGN_RULES:'CHARACTER_DESIGN',CHARACTER_INSPIRATION_REFERENCE:'CHARACTER_INSPIRATION',SAVE_ENGINE_POLICY:'SAVE_ENGINE_POLICY'};
+const IDS={world_state:'world_fact_id',entity_registry:'entity_id',character_runtime:'entity_id',perception_evidence:'evidence_id',knowledge_records:'knowledge_id',memory_records:'memory_id',belief_records:'belief_id',relationships:'relationship_id',commitments:'commitment_id',goals_and_projects:'goal_id',active_events:'event_id',world_processes:'process_id',schedules:'schedule_id',ongoing_actions_and_effects:'effect_id',capability_state:'capability_state_id',calibration:'calibration_id'};
+const clone=x=>structuredClone(x);
+const uid=p=>`${p}-${crypto.randomUUID()}`;
+const fail=(code,detail='')=>{throw Object.assign(new Error(detail?`${code}: ${detail}`:code),{code});};
+const need=(ok,code,detail)=>{if(!ok)fail(code,detail);};
+const plain=x=>x!==null&&typeof x==='object'&&!Array.isArray(x);
+const arr=x=>Array.isArray(x)?x:[];
+function safeJSON(x){
+ if(typeof x==='string'){need(x.length<=12000000,'FILE_TOO_LARGE');x=JSON.parse(x);}
+ function check(v,depth=0){need(depth<80,'NESTING_TOO_DEEP');if(v&&typeof v==='object')for(const k of Object.keys(v)){need(!['__proto__','prototype','constructor'].includes(k),'UNSAFE_KEY',k);check(v[k],depth+1);}else if(typeof v==='number')need(Number.isFinite(v),'NONFINITE_NUMBER');}
+ check(x);return x;
 }
-function packMeta(x,filename=''){
-  return {
-    filename,
-    title:x?.formal_title||x?.formal_name||x?.source_title||x?.title||filename||'未命名',
-    version:x?.source_version||x?.source_release_id||x?.pack_version||x?.schema_version||'未標示',
-    sha256:x?.source_sha256||x?.source?.sha256||x?.source_integrity?.sha256||null,
-    imported_at:new Date().toISOString()
-  };
+function stable(x){if(Array.isArray(x))return '['+x.map(v=>v===undefined?'null':stable(v)).join(',')+']';if(plain(x))return '{'+Object.keys(x).filter(k=>x[k]!==undefined).sort().map(k=>JSON.stringify(k)+':'+stable(x[k])).join(',')+'}';return JSON.stringify(x);}
+async function hash(x){const b=new TextEncoder().encode(typeof x==='string'?x:stable(x));return [...new Uint8Array(await crypto.subtle.digest('SHA-256',b))].map(n=>n.toString(16).padStart(2,'0')).join('');}
+function merge(a,b){safeJSON(b);const r=clone(a);for(const [k,v] of Object.entries(b))r[k]=plain(v)&&plain(r[k])?merge(r[k],v):clone(v);return r;}
+
+function migrateRuntime(input){
+ safeJSON(input);need(plain(input),'INVALID_RUNTIME');need(['2.0','2.1','2.2'].includes(input.schema_version),'UNSUPPORTED_RUNTIME_VERSION');
+ const rt=input.schema_version==='2.2'?clone(input):LegacyCore.upgradeRuntimeForSaveEngine(input);rt.schema_version='2.2';rt.controller_version=VERSION;
+ rt.branch_id=rt.branch_id||uid('branch');rt.simulation_time.elapsed_minutes??=0;
+ rt.player_contract=merge(LegacyCore.createEmptyRuntime().player_contract,rt.player_contract||{});
+ if(rt.pending_turn&&!rt.pending_turn.request_id){rt.legacy_pending=clone(rt.pending_turn);rt.pending_turn=null;rt.audit_state.migration_notice='舊候選回合缺少請求識別，保留在 legacy_pending，須重新驗證後才能接受。';}
+ validateRuntime(rt);return rt;
 }
-function packManifest(){
-  const items={};
-  for(const s of PACK_SLOTS){
-    const p=privatePacks?.[s.slot];
-    items[s.slot]=p?{present:true,meta:p.meta}:{present:false};
+function emptyState(){return {storage_version:3,runtime:null,packs:{},journal:[],cold_archive:[],checkpoints:[],active_request:null,operations:{}};}
+function validateRuntime(rt){
+ safeJSON(rt);need(plain(rt),'INVALID_RUNTIME');need(rt.schema_version==='2.2','UNSUPPORTED_RUNTIME_VERSION');
+ for(const d of Object.keys(IDS))need(Array.isArray(rt[d]),'COLLECTION_NOT_ARRAY',d);
+ for(const k of ['current_scene','simulation_time','player_contract','audit_state'])need(plain(rt[k]),'ROOT_NOT_OBJECT',k);
+ for(const k of ['commit_log','checkpoint_index','archive_index'])need(Array.isArray(rt[k]),'COLLECTION_NOT_ARRAY',k);
+ need(typeof rt.session_id==='string'&&rt.session_id.length>0,'SESSION_REQUIRED');
+ need(Number.isSafeInteger(rt.state_revision)&&rt.state_revision>=0,'BAD_REVISION');need(typeof rt.branch_id==='string'&&rt.branch_id.length>0,'BRANCH_REQUIRED');
+ const v=LegacyCore.validateRuntime({...rt,schema_version:'2.1'});need(v.pass,'INVALID_RUNTIME',v.errors.join(' | '));
+ const entities=new Set(rt.entity_registry.map(e=>e.entity_id));
+ need(rt.current_scene.location_entity_id==null||entities.has(rt.current_scene.location_entity_id),'SCENE_LOCATION_MISSING');
+ need(Array.isArray(rt.current_scene.present_entities),'SCENE_PRESENT_NOT_ARRAY');need(new Set(rt.current_scene.present_entities).size===rt.current_scene.present_entities.length,'DUPLICATE_SCENE_ENTITY');
+ need(Number.isFinite(rt.simulation_time.elapsed_minutes)&&rt.simulation_time.elapsed_minutes>=0,'BAD_CLOCK');
+ for(const o of arr(rt.current_scene.object_states))for(const k of ['entity_id','holder_entity_id','location_entity_id'])if(o[k])need(entities.has(o[k]),'OBJECT_REFERENCE_MISSING',o[k]);
+ for(const [d,key] of [['character_runtime','entity_id'],['perception_evidence','observer_entity_id'],['memory_records','owner_entity_id'],['belief_records','owner_entity_id'],['goals_and_projects','owner_entity_id']])for(const x of rt[d])if(x[key])need(entities.has(x[key]),'OWNER_MISSING',`${d}:${x[key]}`);
+ return true;
+}
+
+async function normalizePack(original){
+ safeJSON(original);need(plain(original),'INVALID_PACK');
+ if(original.normalized_version===3)original=original.original;
+ const slot=original.schema==='aethergard.world_canon_pack'?'WORLD_CANON':TYPES[original.pack_type];need(slot,'UNKNOWN_PACK_TYPE');
+ const text=original.verbatim_source??original.source_text??(slot==='WORLD_CANON'?(original.document_preamble||'')+arr(original.sections).map(s=>s.raw_text).join(''):null);
+ need(typeof text==='string'&&text.length>0,'PACK_TEXT_MISSING',slot);
+ const declared=original.source_sha256??original.source?.source_sha256??original.source?.sha256??original.source_integrity?.sha256;
+ const sha256=await hash(text);need(typeof declared==='string'&&declared===sha256,'PACK_HASH_MISMATCH',slot);
+ const lines=text.split('\n'),sections=[];let start=0,title='文件開頭';
+ for(let i=0;i<lines.length;i++){
+  if(i>start&&(i-start>=40||(i-start>=8&&/^(?:【[^】]+】|#{1,4}\s|[a-zA-Z_][a-zA-Z_0-9]*:\s*$)/.test(lines[i])))){
+   sections.push({id:`pack:${slot}:${sha256.slice(0,12)}:${start+1}-${i}`,title,start_line:start+1,end_line:i,text:lines.slice(start,i).join('\n')});start=i;
   }
-  return {manifest_type:'AETHERGARD_PRIVATE_PACK_MANIFEST',controller_version:'2.4',generated_at:new Date().toISOString(),items};
+  if(i===start&&lines[i].trim())title=lines[i].trim().slice(0,160);
+ }
+ if(start<lines.length)sections.push({id:`pack:${slot}:${sha256.slice(0,12)}:${start+1}-${lines.length}`,title,start_line:start+1,end_line:lines.length,text:lines.slice(start).join('\n')});
+ return {normalized_version:3,slot,title:original.formal_title??original.formal_name??original.source_title??original.source?.formal_title??slot,sha256,line_count:lines.length,sections,original:clone(original)};
+}
+async function importPacks(state,items){
+ const next={...state,packs:{...state.packs}};const normalized=await Promise.all(items.map(normalizePack));need(new Set(normalized.map(p=>p.slot)).size===normalized.length,'DUPLICATE_PACK_IN_BATCH');
+ for(const p of normalized)next.packs[p.slot]=p;
+ if(state.active_request||state.runtime?.pending_turn){need(normalized.every(p=>state.packs[p.slot]?.sha256===p.sha256),'PACK_UPDATE_DURING_PENDING','先完成或丟棄目前回合，再更新規則。');}
+ return next;
+}
+function packVersions(state){return Object.fromEntries(SLOTS.filter(s=>state.packs[s]).map(s=>[s,state.packs[s].sha256]));}
+function tokens(q){const out=new Set((q.toLowerCase().match(/[a-z0-9_-]{3,}|[\u3400-\u9fff]{2,}/g)||[]).slice(0,80));for(const t of [...out])if(/[\u3400-\u9fff]/.test(t))for(let i=0;i<t.length-1;i++)out.add(t.slice(i,i+2));return [...out].slice(0,300);}
+function searchSections(state,{query='',slots=['WORLD_CANON','CORE_RULES','PRESENTATION'],limit=16}={}){
+ const ts=tokens(query);const out=[];
+ for(const slot of slots){need(SLOTS.includes(slot),'UNKNOWN_PACK_SLOT');const p=state.packs[slot];if(!p)continue;for(const s of p.sections){const text=s.text.toLowerCase();let score=0;for(const t of ts)if(text.includes(t))score+=s.title.toLowerCase().includes(t)?6:1;out.push({...s,slot,score});}}
+ return out.sort((a,b)=>b.score-a.score||a.start_line-b.start_line).slice(0,Math.min(Math.max(limit,1),40));
+}
+function safeActorState(x){if(Array.isArray(x))return x.map(safeActorState);if(!plain(x))return x;const out={};for(const [k,v] of Object.entries(x))if(!/system_truth|hidden_truth|other_.*secret|original_experience/.test(k))out[k]=safeActorState(v);return out;}
+function actorPacket(rt,id,input){
+ need(rt.entity_registry.some(e=>e.entity_id===id),'UNKNOWN_ACTOR',id);
+ const p=LegacyCore.buildPrivateCharacterPacket(rt,id,{playerParsed:input,allowPlayerPrivate:false});
+ p.character_runtime=safeActorState(p.character_runtime);p.beliefs=safeActorState(p.beliefs);p.commitments=safeActorState(p.commitments);
+ p.memories=rt.memory_records.filter(m=>m.owner_entity_id===id&&!['BLOCKED','FORGOTTEN'].includes(m.access_state)).map(m=>({memory_id:m.memory_id,remembered_version:m.remembered_version,access_state:m.access_state,recall_confidence:m.recall_confidence,retrieval_cues:m.retrieval_cues}));
+ p.calibration=rt.calibration.filter(c=>c.owner_entity_id===id||c.entity_id===id||c.actor_entity_id===id||c.target_entity_id===id||c.character_id===id||arr(c.target_entity_ids).includes(id));
+ p.goals=rt.goals_and_projects.filter(g=>g.owner_entity_id===id||g.actor_entity_id===id);
+ p.constraints='這是此角色的主觀資料；猜測、誤解、信念不能升格成客觀事實。場外指示與玩家內心不可成為角色知情來源。';
+ return p;
+}
+function classifyInput(rt,{raw,observable='',private_text='',ooc='',signal='IN_WORLD'}){
+ need(typeof raw==='string'&&raw.trim().length>0&&raw.length<=12000,'INPUT_REQUIRED');
+ need(['IN_WORLD','OOC','CORRECTION','MIXED'].includes(signal),'BAD_SIGNAL');
+ const p=LegacyCore.parsePlayerInput(raw,rt.player_contract.spoken_delimiters??['「','」']);
+ for(const [label,text] of Object.entries({observable,private_text,ooc})){need(typeof text==='string','BAD_INPUT_CLASSIFICATION',label);if(text)need(raw.includes(text),'INPUT_CLASSIFICATION_NOT_VERBATIM',label);}
+ need(!observable||observable!==private_text,'OBSERVABLE_PRIVATE_OVERLAP');
+ return {...p,observable_action_text:observable,private_player_content:private_text||p.outside_quotes||null,ooc:ooc||null,classification_status:'CLASSIFIED',signal};
+}
+const CORE_CHECKLIST=['先依正式來源裁定，再生成正文。','尊重玩家台詞、內心與決策權；未明說的選擇不可代作。','逐一判定誰在場、看見什麼、如何取得知識；不共享角色私密知情。','世界規則約束結果，不自動成為角色常識。','保留人物目的、矛盾、情緒、身分與周遭反應，避免角色同質化。','依距離、時間、資源、制度與能力評估可行性；異常應判定可察覺者及合理反應。','候選回合不等於正式歷史；下一個世界內輸入才接受，場外問題保留，修正丟棄。','禁用乾式幽默、乾式個性及以乾形容人物與互動的標籤。','不確定且影響裁定時查來源；與既有角色有關先查人物索引，避免生成替代人物。'];
+function turnContext(state,req){
+ const rt=state.runtime;const query=[req.input.raw,rt.current_scene.exact_handoff,...rt.current_scene.present_entities.map(id=>rt.entity_registry.find(e=>e.entity_id===id)?.canonical_name||id)].join(' ');
+ const selected=searchSections(state,{query,limit:18});const mandatory=['WORLD_CANON','CORE_RULES','PRESENTATION'].flatMap(s=>arr(state.packs[s]?.sections).slice(0,1));
+ const sections=[...new Map([...mandatory,...selected].map(s=>[s.id,s])).values()];
+ const allowed=sections.map(s=>s.id);req.delivered_source_refs=[...new Set([...arr(req.delivered_source_refs),...allowed])];
+ return {protocol:'AETHERGARD_3',request_id:req.id,based_on_revision:req.revision,branch_id:req.branch_id,pack_versions:req.pack_versions,input:req.input,scene:clone(rt.current_scene),clock:clone(rt.simulation_time),player_contract:clone(rt.player_contract),orchestration_rules:CORE_CHECKLIST,
+  actor_packets:rt.current_scene.present_entities.map(id=>actorPacket(rt,id,req.input)),gm_reference:{sections,calibration:clone(rt.calibration),active_events:clone(rt.active_events),schedules:clone(rt.schedules),world_processes:clone(rt.world_processes),warning:'以下來源供世界與演繹裁定；不得直接當成任何角色已知。'},
+  retrieval:{included:sections.length,available:Object.values(state.packs).reduce((n,p)=>n+p.sections.length,0),more:'使用 search_rules 或 read_sections 讀取缺少的規則；需要生成新角色才讀 CHARACTER_DESIGN 與 CHARACTER_INSPIRATION。',pack_index:Object.fromEntries(Object.values(state.packs).map(p=>[p.slot,{title:p.title,sha256:p.sha256,sections:p.sections.length}]))},
+  evidence_ref:`input:${req.id}`,review_requirement:'提交前檢查所有正文段落、人物動機、情境氣氛、知情與世界設定。語意審查屬模型審查，不是程式保證。',candidate_schema:{required:['request_id','based_on_revision','branch_id','pack_versions','narration','spans','candidate_deltas','review'],span_kinds:['NPC_DIALOGUE','NPC_ACTION','NPC_INTERNAL','PLAYER_DIALOGUE','PLAYER_ACTION','PLAYER_INTERNAL','SCENE','PRESENTATION'],span_fields:['text（逐字段落）或 start/end','kind','actor_id?','knowledge_ids?','source_refs'],delta_fields:['domain','op','record_id','value?','source_refs','event_refs?'],review:{checked:['player_control','knowledge','character','world','atmosphere','continuity'],notes:'逐項具體理由；不能只寫 PASS。'},object_domains:['current_scene','simulation_time'],clock_rule:'以 elapsed_minutes 單調遞增，並提供顯示日期；不可用日期字串排序。'}};
+}
+function knownRefs(rt){const refs=new Set();for(const [d,k] of Object.entries(IDS))for(const r of rt[d])refs.add(r[k]);for(const s of arr(rt.source_registry))if(s.source_id)refs.add(s.source_id);for(const c of arr(rt.commit_log)){refs.add(c.commit_id);for(const e of arr(c.event_refs))refs.add(e);}return refs;}
+function applyDelta(rt,d){
+ need(plain(d),'INVALID_DELTA');need(['UPSERT','PATCH','DELETE'].includes(d.op),'BAD_DELTA_OP');
+ if(['current_scene','simulation_time'].includes(d.domain)){
+  need(d.op==='PATCH'&&plain(d.value),'OBJECT_PATCH_REQUIRED',d.domain);
+  const allow=d.domain==='simulation_time'?['current_world_datetime','last_committed_event_time','elapsed_minutes']:Object.keys(LegacyCore.createEmptyRuntime().current_scene);
+  need(Object.keys(d.value).every(k=>allow.includes(k)),'FORBIDDEN_OBJECT_FIELD');const before=clone(rt[d.domain]);rt[d.domain]=merge(before,d.value);return {domain:d.domain,op:'REPLACE_OBJECT',value:before};
+ }
+ const key=IDS[d.domain];need(key,'UNSUPPORTED_DELTA_DOMAIN',d.domain);need(typeof d.record_id==='string'&&d.record_id,'DELTA_ID_REQUIRED');
+ const idx=rt[d.domain].findIndex(r=>r[key]===d.record_id),before=idx>=0?clone(rt[d.domain][idx]):null;
+ if(d.op==='DELETE'){need(idx>=0,'DELETE_TARGET_MISSING');rt[d.domain].splice(idx,1);}
+ else {need(plain(d.value),'DELTA_VALUE_REQUIRED');if(d.op==='UPSERT')need(d.value[key]===d.record_id,'DELTA_ID_MISMATCH');else {need(idx>=0,'PATCH_TARGET_MISSING');need(d.value[key]===undefined||d.value[key]===d.record_id,'PRIMARY_ID_IMMUTABLE');}
+  const rec=d.op==='PATCH'?merge(before,d.value):clone(d.value);if(idx<0)rt[d.domain].push(rec);else rt[d.domain][idx]=rec;
+ }
+ return before?{domain:d.domain,op:'UPSERT',record_id:d.record_id,value:before}:{domain:d.domain,op:'DELETE',record_id:d.record_id};
+}
+function validateCandidate(state,env){
+ safeJSON(env);const rt=state.runtime,req=state.active_request;need(rt&&req,'NO_ACTIVE_REQUEST');
+ need(req.input.signal==='IN_WORLD'||req.input.signal==='CORRECTION','OOC_CANNOT_STAGE');need(env.request_id===req.id,'WRONG_REQUEST');
+ need(env.based_on_revision===req.revision&&env.based_on_revision===rt.state_revision,'STALE_REVISION');need(env.branch_id===rt.branch_id&&req.branch_id===rt.branch_id,'WRONG_BRANCH');
+ need(stable(env.pack_versions)===stable(req.pack_versions)&&stable(req.pack_versions)===stable(packVersions(state)),'STALE_RULES');
+ need(typeof env.narration==='string'&&env.narration.trim()&&env.narration.length<=30000,'NARRATION_REQUIRED');
+ need(!/乾式(?:幽默|個性|性格)|乾(?:乾)?地(?:說|笑|回)|乾巴巴的(?:幽默|個性)/.test(env.narration),'FORBIDDEN_CHARACTER_LABEL');
+ need(Array.isArray(env.candidate_deltas)&&env.candidate_deltas.length<=150,'DELTAS_REQUIRED');
+ const projected=clone(rt),inverse=[];const refs=knownRefs(rt);refs.add(`input:${req.id}`);for(const x of req.delivered_source_refs)refs.add(x);
+ const pendingIds=new Set(env.candidate_deltas.filter(d=>d.op!=='DELETE').map(d=>d.record_id).filter(Boolean));
+ for(const d of env.candidate_deltas){need(arr(d.source_refs).length>0,'DELTA_WITHOUT_PROVENANCE');for(const r of d.source_refs)need(refs.has(r)||pendingIds.has(r),'UNRESOLVED_SOURCE',r);need(!d.source_refs.every(r=>r===d.record_id),'SELF_REFERENCED_EVIDENCE');inverse.unshift(applyDelta(projected,d));}
+ validateRuntime(projected);need(projected.simulation_time.elapsed_minutes>=rt.simulation_time.elapsed_minutes,'CLOCK_REVERSED');
+ if(projected.simulation_time.current_world_datetime!==rt.simulation_time.current_world_datetime)need(projected.simulation_time.elapsed_minutes>rt.simulation_time.elapsed_minutes,'CLOCK_DISPLAY_WITHOUT_ADVANCE');
+ if(projected.simulation_time.elapsed_minutes>rt.simulation_time.elapsed_minutes)need(projected.simulation_time.current_world_datetime!==rt.simulation_time.current_world_datetime,'CLOCK_ADVANCE_WITHOUT_DISPLAY');
+ for(const d of env.candidate_deltas){
+  for(const e of arr(d.event_refs))need(projected.active_events.some(x=>x.event_id===e)||rt.archive_index.some(x=>x.event_id===e),'UNKNOWN_EVENT_REF',e);
+  if(d.domain==='knowledge_records'&&d.op!=='DELETE'){
+   const k=projected.knowledge_records.find(x=>x.knowledge_id===d.record_id);if(k.state==='UNKNOWN')continue;
+   for(const ref of k.acquisition_refs){const ev=projected.perception_evidence.find(e=>e.evidence_id===ref);const old=rt.knowledge_records.find(x=>x.knowledge_id===d.record_id);
+    need((ev&&ev.observer_entity_id===k.owner_entity_id&&ev.observability!=='NONE')||arr(old?.acquisition_refs).includes(ref),'KNOWLEDGE_EVIDENCE_MISSING',ref);
+   }
+  }
+  if(d.domain==='perception_evidence'&&d.op!=='DELETE'){
+   const e=projected.perception_evidence.find(x=>x.evidence_id===d.record_id);const present=new Set([...rt.current_scene.present_entities,...projected.current_scene.present_entities]);
+   if(!present.has(e.observer_entity_id))need(e.channel==='REMOTE'&&typeof e.source_entity_or_medium==='string'&&e.source_entity_or_medium.length>0,'OFFSCREEN_OBSERVER_WITHOUT_CHANNEL');
+   if(e.observed_content&&req.input.private_player_content&&e.observed_content===req.input.private_player_content&&e.observed_content!==req.input.observable_action_text)fail('PRIVATE_INPUT_AS_EVIDENCE');
+  }
+ }
+ // New provenance must terminate at an already available source, never a cycle of invented records.
+ const graph=new Map(env.candidate_deltas.filter(d=>d.record_id).map(d=>[d.record_id,d.source_refs]));
+ function rooted(id,path=new Set()){if(refs.has(id))return true;if(path.has(id))return false;return arr(graph.get(id)).some(r=>rooted(r,new Set([...path,id])));}
+ for(const d of env.candidate_deltas)need(d.source_refs.some(r=>rooted(r)),'UNROOTED_PROVENANCE');
+ need(Array.isArray(env.spans)&&env.spans.length>0&&env.spans.length<=300,'NARRATION_COVERAGE_REQUIRED');let cursor=0;
+ for(const originalSpan of env.spans){
+  const s=typeof originalSpan.text==='string'?{...originalSpan,start:cursor,end:cursor+originalSpan.text.length}:originalSpan;
+  if(originalSpan.text!==undefined)need(typeof originalSpan.text==='string'&&env.narration.slice(s.start,s.end)===originalSpan.text,'SPAN_TEXT_MISMATCH');
+  need(Number.isInteger(s.start)&&Number.isInteger(s.end)&&s.start===cursor&&s.end>cursor&&s.end<=env.narration.length,'NARRATION_COVERAGE_GAP');cursor=s.end;
+  need(['NPC_DIALOGUE','NPC_ACTION','NPC_INTERNAL','PLAYER_DIALOGUE','PLAYER_ACTION','PLAYER_INTERNAL','SCENE','PRESENTATION'].includes(s.kind),'BAD_SPAN_KIND');
+  const text=env.narration.slice(s.start,s.end).trim();need(arr(s.source_refs).length>0,'SPAN_SOURCE_REQUIRED');for(const ref of s.source_refs)need(refs.has(ref)||pendingIds.has(ref),'SPAN_SOURCE_UNRESOLVED',ref);
+  if(s.kind.startsWith('NPC_')){
+   need([...rt.current_scene.present_entities,...projected.current_scene.present_entities].includes(s.actor_id),'NPC_NOT_IN_SCENE');
+   for(const id of arr(s.knowledge_ids)){const k=projected.knowledge_records.find(k=>k.knowledge_id===id&&k.owner_entity_id===s.actor_id);need(k&&k.state!=='UNKNOWN','NARRATION_KNOWLEDGE_LEAK',id);}
+   const privateText=req.input.private_player_content?.trim();if(privateText&&privateText.length>=5&&text.includes(privateText)&&privateText!==req.input.observable_action_text)fail('PRIVATE_INPUT_IN_NPC_SPAN');
+  }
+  if(s.kind==='PLAYER_DIALOGUE')need(req.input.spoken_dialogue.some(t=>text===t||text===`「${t}」`||text===`『${t}』`),'INVENTED_PLAYER_DIALOGUE');
+  if(s.kind==='PLAYER_ACTION')need(text&&req.input.observable_action_text.includes(text),'INVENTED_PLAYER_ACTION');
+  if(s.kind==='PLAYER_INTERNAL')need(text&&req.input.private_player_content?.includes(text),'INVENTED_PLAYER_INTERNAL');
+ }
+ need(cursor===env.narration.length,'NARRATION_COVERAGE_GAP');
+ need(plain(env.review)&&typeof env.review.notes==='string'&&env.review.notes.trim().length>=20,'SEMANTIC_REVIEW_REQUIRED');
+ for(const k of ['player_control','knowledge','character','world','atmosphere','continuity'])need(arr(env.review.checked).includes(k),'REVIEW_CHECK_MISSING',k);
+ return {projected,inverse,checks:{structural:'PASS',provenance:'PASS',coverage:'PASS',semantic:'MODEL_REVIEWED_NOT_GUARANTEED'}};
+}
+function compactOperations(operations,limit=128){
+ const entries=Object.entries(operations||{});
+ if(entries.length<=limit)return Object.fromEntries(entries);
+ return Object.fromEntries(entries.slice(-limit));
+}
+function compactAutoCheckpoints(checkpoints){
+ const rows=arr(checkpoints);
+ const rules=[['還原前自動保存',10],['回滾前自動保存',10],['匯入前快照',5]];
+ const keep=new Set();
+ for(const [label,limit] of rules){
+  const hits=rows.map((c,i)=>[c,i]).filter(([c])=>c?.label===label);
+  for(const [,i] of hits.slice(-limit))keep.add(i);
+ }
+ return rows.filter((c,i)=>!rules.some(([label])=>c?.label===label)||keep.has(i));
+}
+function nextState(state){return {...state,runtime:state.runtime?clone(state.runtime):null,active_request:state.active_request?clone(state.active_request):null,journal:[...state.journal],checkpoints:compactAutoCheckpoints(state.checkpoints),operations:compactOperations(state.operations)};}
+function status(state){return {version:VERSION,initialized:!!state.runtime,revision:state.runtime?.state_revision??null,branch_id:state.runtime?.branch_id??null,world_time:state.runtime?.simulation_time?.current_world_datetime??null,pack_count:Object.keys(state.packs).length,missing_packs:SLOTS.filter(s=>!state.packs[s]),pending_turn_id:state.runtime?.pending_turn?.turn_id??null,pending_narration:state.runtime?.pending_turn?.narration??null,active_request_id:state.active_request?.id??null,exact_handoff:state.runtime?.current_scene?.exact_handoff??null};}
+async function beginTurn(state,args){
+ need(state.runtime,'IMPORT_REQUIRED');need(typeof args.message_id==='string'&&args.message_id.length>0&&args.message_id.length<=160,'MESSAGE_ID_REQUIRED');
+ const fingerprint=await hash(args),prev=state.operations[args.message_id];
+ if(prev){need(prev.fingerprint===fingerprint,'IDEMPOTENCY_CONFLICT');const copy=nextState(state);return {state,result:copy.active_request?.id===prev.request_id?turnContext(copy,copy.active_request):{already_processed:true,request_id:prev.request_id,...status(state)},replayed:true};}
+ need(SLOTS.every(s=>state.packs[s]),'PACKS_MISSING',SLOTS.filter(s=>!state.packs[s]).join(','));
+ const next=nextState(state);const input=classifyInput(next.runtime,args);
+ if(['OOC','MIXED'].includes(input.signal))return {state,result:{mode:'OOC',...status(state),instruction:'回答場外問題；保留候選回合，不推進世界、不產生或覆蓋候選回合。混合訊息先釐清修正，再繼續世界。'}};
+ if(input.signal==='CORRECTION'){if(next.runtime.pending_turn)need(args.pending_turn_id===next.runtime.pending_turn.turn_id,'PENDING_ID_REQUIRED');next.runtime.pending_turn=null;next.active_request=null;}
+ else if(next.runtime.pending_turn){need(args.pending_turn_id===next.runtime.pending_turn.turn_id,'PENDING_ID_REQUIRED');commitPending(next);}
+ else if(next.active_request)fail('UNFINISHED_REQUEST','請恢復現有回合，或用 CORRECTION 明確重來。');
+ const req={id:uid('request'),message_id:args.message_id,revision:next.runtime.state_revision,branch_id:next.runtime.branch_id,pack_versions:packVersions(next),input,delivered_source_refs:[]};
+ next.active_request=req;const result=turnContext(next,req);next.operations[args.message_id]={fingerprint,request_id:req.id};next.operations=compactOperations(next.operations);
+ return {state:next,result};
+}
+function commitPending(state,acceptedBy='NEXT_IN_WORLD'){
+ const p=state.runtime.pending_turn;need(p,'NO_PENDING');const v=validateCandidate(state,p.envelope);
+ const rt=v.projected;const from=state.runtime.state_revision;rt.state_revision=from+1;rt.pending_turn=null;
+ const commit={commit_id:uid('commit'),turn_id:p.turn_id,request_id:p.request_id,from_revision:from,to_revision:rt.state_revision,branch_id:rt.branch_id,accepted_by:acceptedBy,candidate_deltas:clone(p.envelope.candidate_deltas),inverse:clone(v.inverse),narration:p.narration,input:clone(state.active_request.input),review:clone(p.envelope.review),checks:v.checks,event_refs:[...new Set(p.envelope.candidate_deltas.flatMap(d=>arr(d.event_refs)))],pack_versions:clone(p.envelope.pack_versions)};
+ state.journal.push({journal_id:`journal:${commit.commit_id}`,commit});rt.commit_log.push({...commit,narration:undefined,input:undefined,inverse:undefined,review:undefined});rt.commit_log=rt.commit_log.slice(-20);
+ rt.save_engine.journal_count=(state.journal_prefix_keys?.length||0)+state.journal.length;rt.audit_state.last_validation={stage:'COMMIT',checks:v.checks};state.runtime=rt;state.active_request=null;
+}
+async function stageTurn(state,env){
+ const digest=await hash(env);const existing=state.runtime?.pending_turn;
+ if(existing){need(existing.digest===digest&&existing.request_id===env.request_id,'PENDING_EXISTS','明確修正後才能替換已產生的回合。');return {state,result:{turn_id:existing.turn_id,narration:existing.narration,status:'AWAITING_PLAYER',checks:existing.checks},replayed:true};}
+ const v=validateCandidate(state,env),next=nextState(state);const p={turn_id:uid('turn'),request_id:env.request_id,based_on_revision:env.based_on_revision,status:'AWAITING_PLAYER',digest,narration:env.narration,envelope:clone(env),checks:v.checks};
+ next.runtime.pending_turn=p;return {state:next,result:{turn_id:p.turn_id,narration:p.narration,status:p.status,checks:p.checks,instruction:'現在顯示這份已保存的正文。若串流中斷，恢復同一份正文，不再生成新回合。'}};
+}
+function readSections(state,{request_id,section_ids}){
+ need(state.active_request?.id===request_id,'WRONG_REQUEST');need(Array.isArray(section_ids)&&section_ids.length>0&&section_ids.length<=20,'SECTION_IDS_REQUIRED');
+ const all=Object.values(state.packs).flatMap(p=>p.sections);const sections=section_ids.map(id=>{const s=all.find(s=>s.id===id);need(s,'SECTION_NOT_FOUND',id);return s;});
+ const next=nextState(state);next.active_request.delivered_source_refs=[...new Set([...next.active_request.delivered_source_refs,...section_ids])];return {state:next,result:{sections,warning:'來源屬 GM 裁定資料，不會自動授權角色知情。'}};
+}
+function discardTurn(state,{request_id,pending_turn_id}){need(state.active_request?.id===request_id,'WRONG_REQUEST');if(state.runtime.pending_turn)need(state.runtime.pending_turn.turn_id===pending_turn_id,'PENDING_ID_REQUIRED');const next=nextState(state);next.runtime.pending_turn=null;next.active_request=null;return {state:next,result:{discarded:true,revision:next.runtime.state_revision}};}
+function saveGame(state,{pending_turn_id,label='正式存檔'}={}){const next=nextState(state);if(next.runtime?.pending_turn&&next.runtime.player_contract.explicit_save_accepts_previous_pending_turn){need(pending_turn_id===next.runtime.pending_turn.turn_id,'PENDING_ID_REQUIRED');commitPending(next,'EXPLICIT_SAVE');}return checkpoint(next,label);}
+function checkpoint(state,label='手動存檔'){
+ need(state.runtime,'IMPORT_REQUIRED');const cp={checkpoint_id:uid('checkpoint'),label,revision:state.runtime.state_revision,branch_id:state.runtime.branch_id,runtime:clone(state.runtime),active_request:clone(state.active_request),pack_versions:packVersions(state)};
+ const rt=clone(state.runtime);rt.checkpoint_index.push({checkpoint_id:cp.checkpoint_id,label,revision:cp.revision});rt.save_engine.last_checkpoint_id=cp.checkpoint_id;rt.save_engine.last_checkpoint_revision=cp.revision;return {...state,runtime:rt,checkpoints:compactAutoCheckpoints([...state.checkpoints,cp])};
+}
+function restoreCheckpoint(state,id){
+ const cp=state.checkpoints.find(c=>c.checkpoint_id===id);need(cp,'CHECKPOINT_NOT_FOUND');need(stable(cp.pack_versions)===stable(packVersions(state))||cp.packs,'CHECKPOINT_RULE_VERSION_MISMATCH');
+ let next=checkpoint(state,'還原前自動保存');next.runtime=clone(cp.runtime);next.packs=cp.packs?clone(cp.packs):state.packs;next.runtime.branch_lineage=[...arr(cp.runtime.branch_lineage),{branch_id:cp.runtime.branch_id,max_revision:cp.revision}];next.runtime.state_revision=state.runtime.state_revision+1;next.runtime.branch_id=uid('branch');next.runtime.pending_turn=null;next.active_request=null;next.operations={};
+ next.runtime.audit_state.last_restore={checkpoint_id:id,previous_revision:state.runtime.state_revision,discarded_pending:!!cp.runtime.pending_turn};validateRuntime(next.runtime);return next;
+}
+function rollbackTo(state,targetRevision){
+ need(Number.isSafeInteger(targetRevision)&&targetRevision>=0&&targetRevision<state.runtime.state_revision,'BAD_ROLLBACK_REVISION');
+ const rt=clone(state.runtime);const rows=state.journal.map(j=>j.commit).filter(c=>c.branch_id===rt.branch_id&&c.to_revision>targetRevision).sort((a,b)=>b.to_revision-a.to_revision);
+ let expected=rt.state_revision;for(const c of rows){need(c.to_revision===expected&&Array.isArray(c.inverse),'ROLLBACK_HISTORY_INCOMPLETE');for(const inv of c.inverse){if(inv.op==='REPLACE_OBJECT')rt[inv.domain]=clone(inv.value);else applyDelta(rt,inv);}expected=c.from_revision;}
+ need(expected===targetRevision,'ROLLBACK_HISTORY_INCOMPLETE');rt.branch_lineage=[...arr(rt.branch_lineage),{branch_id:rt.branch_id,max_revision:targetRevision}];rt.state_revision=state.runtime.state_revision+1;rt.branch_id=uid('branch');rt.pending_turn=null;rt.commit_log=[];rt.audit_state.last_rollback={to_revision:targetRevision,abandoned_branch:state.runtime.branch_id};validateRuntime(rt);
+ return {...checkpoint(state,'回滾前自動保存'),runtime:rt,active_request:null,operations:{}};
+}
+function archiveEvent(state,id){
+ const rt=clone(state.runtime);need(!rt.pending_turn&&!state.active_request,'ARCHIVE_DURING_TURN');const e=rt.active_events.find(e=>e.event_id===id);need(e,'EVENT_MISSING');const v=LegacyCore.archiveEligibility(e);need(v.ok,'EVENT_STILL_ACTIVE',v.reasons.join(','));
+ const obligations=[...rt.commitments,...rt.goals_and_projects,...rt.schedules,...rt.ongoing_actions_and_effects].filter(x=>!['ENDED','CLOSED','RESOLVED','CANCELLED','INVALIDATED'].includes(x.status));
+ need(!obligations.some(x=>stable(x).includes(id)),'EVENT_HAS_ACTIVE_DEPENDENCY');const rec=LegacyCore.makeColdArchiveRecord(rt,id);rt.active_events=rt.active_events.filter(x=>x.event_id!==id);rt.archive_index.push({event_id:id,archive_record_id:rec.archive_record_id,summary:e.summary??e.name??id});rt.state_revision++;rt.save_engine.cold_archive_count=(state.archive_prefix_keys?.length||0)+state.cold_archive.length+1;
+ return {...state,runtime:rt,cold_archive:[...state.cold_archive,rec]};
+}
+async function backup(state){
+ need(state.runtime,'IMPORT_REQUIRED');const payload=clone({bundle_type:'AETHERGARD_CONTROLLER_BACKUP',bundle_version:'3.0',created_at:new Date().toISOString(),runtime:state.runtime,private_packs:Object.fromEntries(Object.entries(state.packs).map(([k,p])=>[k,p.original])),delta_journal:state.journal,cold_archive:state.cold_archive,checkpoints:state.checkpoints,active_request:state.active_request,operations:state.operations});
+ return {...payload,integrity:{algorithm:'SHA-256',sha256:await hash(payload)}};
+}
+async function importBackup(input){
+ safeJSON(input);let next=emptyState();
+ if(input.bundle_type==='AETHERGARD_CONTROLLER_BACKUP'){
+  need(['2.3','3.0'].includes(input.bundle_version),'UNSUPPORTED_BACKUP_VERSION');
+  if(input.bundle_version==='3.0'){const {integrity,...payload}=input;need(integrity?.sha256===await hash(payload),'BACKUP_HASH_MISMATCH');}
+  next.runtime=migrateRuntime(input.runtime);for(const k of ['delta_journal','cold_archive','checkpoints'])need(input[k]===undefined||Array.isArray(input[k]),'BACKUP_COLLECTION_INVALID',k);
+  next.journal=clone(input.delta_journal||[]);next.cold_archive=clone(input.cold_archive||[]);next.checkpoints=clone(input.checkpoints||[]);
+  const importedRuntime=next.runtime;next=await importPacks({...next,runtime:null},Object.values(input.private_packs||{}).map(p=>p.data??p));next.runtime=importedRuntime;next.active_request=clone(input.active_request||null);next.operations=clone(input.operations||{});
+  if(next.runtime.pending_turn){need(next.active_request,'BACKUP_PENDING_WITHOUT_REQUEST');validateCandidate(next,next.runtime.pending_turn.envelope);}
+ }else next.runtime=migrateRuntime(input);
+ return next;
+}
+const Controller={VERSION,SLOTS,emptyState,migrateRuntime,validateRuntime,normalizePack,importPacks,packVersions,searchSections,actorPacket,turnContext,status,beginTurn,stageTurn,readSections,discardTurn,saveGame,checkpoint,restoreCheckpoint,rollbackTo,archiveEvent,backup,importBackup,hash,clone,uid,safeJSON};
+
+const E=Controller;
+
+class LocalStore {
+ constructor(name='aethergard-controller-v22'){this.name=name;this.revision=null;this.keys=new Set();this.hashCache=new WeakMap();this.lastCleanup={removed:0,retained:0};}
+ async db(){return new Promise((res,rej)=>{const q=indexedDB.open(this.name,1);q.onupgradeneeded=()=>q.result.createObjectStore('kv');q.onsuccess=()=>res(q.result);q.onerror=()=>rej(q.error);});}
+ async load(){const d=await this.db();let rows;try{rows=await new Promise((res,rej)=>{const tx=d.transaction('kv','readonly'),keys=['controller-v3','runtime','private-packs-v1','delta-journal','cold-archive','checkpoints'],out={};for(const k of keys){const q=tx.objectStore('kv').get(k);q.onsuccess=()=>out[k]=q.result;}tx.oncomplete=()=>res(out);tx.onerror=()=>rej(tx.error);});}finally{d.close();}
+  if(rows['controller-v3']){this.revision=rows['controller-v3'].revision;const record=rows['controller-v3'];let state=record.state;if(record.parts){const db=await this.db();const values=await new Promise((res,rej)=>{const tx=db.transaction('kv','readonly'),out={};for(const key of Object.values(record.parts).flat()){this.keys.add(key);const q=tx.objectStore('kv').get(key);q.onsuccess=()=>out[key]=q.result;}tx.oncomplete=()=>res(out);tx.onerror=()=>rej(tx.error);});db.close();for(const key of this.keys)if(values[key]===undefined)throw new Error('存檔區塊缺失，請用完整備份還原。');state={...state,packs:Object.fromEntries(record.parts.packs.map(k=>[values[k].slot,values[k]])),journal:record.parts.journal.map(k=>values[k]),cold_archive:record.parts.cold_archive.map(k=>values[k]),checkpoints:record.parts.checkpoints.map(k=>values[k])};}if(state.runtime)E.validateRuntime(state.runtime);return state;}
+  this.revision=0;let state=E.emptyState();if(rows.runtime){state.runtime=E.migrateRuntime(rows.runtime);state.journal=rows['delta-journal']||[];state.cold_archive=rows['cold-archive']||[];state.checkpoints=(rows.checkpoints||[]).map(c=>({...c,legacy:true}));}
+  state=await E.importPacks(state,Object.values(rows['private-packs-v1']||{}).map(p=>p.data??p));return state;
+ }
+ async save(state){if(state.runtime)E.validateRuntime(state.runtime);state={...state,operations:compactOperations(state.operations),checkpoints:compactAutoCheckpoints(state.checkpoints)};const {packs,journal,cold_archive,checkpoints,...hot}=state;const parts={packs:[],journal:[],cold_archive:[],checkpoints:[]},writes=[];
+  for(const [kind,items] of Object.entries({packs:Object.values(packs),journal,cold_archive,checkpoints}))for(const item of items){let digest=this.hashCache.get(item);if(!digest){digest=await E.hash(item);this.hashCache.set(item,digest);}const key=`v3:${kind}:${digest}`;parts[kind].push(key);if(!this.keys.has(key))writes.push([key,item]);}
+  const keep=new Set(Object.values(parts).flat());
+  const d=await this.db();try{let removed=0;const revision=await new Promise((res,rej)=>{const tx=d.transaction('kv','readwrite'),s=tx.objectStore('kv');let error=null;const q=s.get('controller-v3');q.onsuccess=()=>{const current=q.result?.revision??0;if(current!==this.revision){error=new Error('另一個分頁已更新存檔，請重新載入後再操作。');tx.abort();return;}for(const [k,v] of writes)s.put(v,k);s.put({revision:current+1,state:hot,parts},'controller-v3');const kq=s.getAllKeys();kq.onsuccess=()=>{for(const key of kq.result){if(typeof key==='string'&&key.startsWith('v3:')&&!keep.has(key)){s.delete(key);removed++;}}};};tx.oncomplete=()=>res(this.revision+1);tx.onabort=()=>rej(error||tx.error||new Error('保存中斷，原存檔仍保留。'));tx.onerror=()=>rej(tx.error);});this.revision=revision;this.keys=keep;this.lastCleanup={removed,retained:keep.size};}finally{d.close();}}
 }
 
-function db(){return new Promise((res,rej)=>{const q=indexedDB.open(DB_NAME,1);q.onupgradeneeded=()=>q.result.createObjectStore(STORE);q.onsuccess=()=>res(q.result);q.onerror=()=>rej(q.error);});}
-async function getKV(k){const d=await db();return new Promise((res,rej)=>{const tx=d.transaction(STORE,'readonly');const q=tx.objectStore(STORE).get(k);q.onsuccess=()=>res(q.result);q.onerror=()=>rej(q.error);});}
-async function setKV(k,v){const d=await db();return new Promise((res,rej)=>{const tx=d.transaction(STORE,'readwrite');tx.objectStore(STORE).put(v,k);tx.oncomplete=()=>res();tx.onerror=()=>rej(tx.error);});}
-async function delKV(k){const d=await db();return new Promise((res,rej)=>{const tx=d.transaction(STORE,'readwrite');tx.objectStore(STORE).delete(k);tx.oncomplete=()=>res();tx.onerror=()=>rej(tx.error);});}
-
-async function save(){if(runtime){runtime=Core.upgradeRuntimeForSaveEngine(runtime);runtime.save_engine.journal_count=journal.length;runtime.save_engine.cold_archive_count=coldArchive.length;await setKV(RUNTIME_KEY,runtime);} await setKV(CPS_KEY,checkpoints);await setKV(JOURNAL_KEY,journal);await setKV(ARCHIVE_KEY,coldArchive);render();}
-function downloadJSON(name,obj){const blob=new Blob([pretty(obj)],{type:'application/json'});const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download=name;document.body.append(a);a.click();setTimeout(()=>{URL.revokeObjectURL(a.href);a.remove()},500)}
-async function shareJSON(name,obj){const file=new File([pretty(obj)],name,{type:'application/json'});if(navigator.canShare?.({files:[file]})){await navigator.share({files:[file],title:name});}else downloadJSON(name,obj)}
-async function copyText(text){await navigator.clipboard.writeText(text)}
-async function shareText(text,title='Aethergard Turn Request'){if(navigator.share) await navigator.share({title,text}); else await copyText(text)}
-
-function captureLatestCommitToJournal(){
-  if(!runtime?.commit_log?.length) return;
-  const c=runtime.commit_log[runtime.commit_log.length-1];
-  if(!c?.commit_id) return;
-  const jid=`journal:${c.commit_id}`;
-  if(!journal.some(j=>j.journal_id===jid)) journal.push(Core.toJournalEntry(c));
-  runtime=Core.trimHotCommitLog(runtime);
-}
-function buildFullBackup(){return runtime?Core.buildBackupBundle(runtime,{journal,coldArchive,checkpoints}):null;}
-function createLocalCheckpoint(label){
-  if(!runtime) return null;
-  const cp=Core.createCheckpoint(runtime,label);
-  checkpoints.push(cp);
-  runtime.checkpoint_index=runtime.checkpoint_index??[];
-  runtime.checkpoint_index.push({checkpoint_id:cp.checkpoint_id,label:cp.label,revision:cp.revision});
-  runtime.save_engine.last_checkpoint_revision=runtime.state_revision;
-  runtime.save_engine.last_checkpoint_id=cp.checkpoint_id;
-  runtime=Core.trimHotCommitLog(runtime);
-  return cp;
-}
-function renderSaveEngine(){
-  const box=$('#saveEngineMetrics'); if(!box) return;
-  if(!runtime){box.innerHTML='<div class="k">狀態</div><div>尚未載入 Runtime</div>';return;}
-  box.innerHTML=`<div class="k">Hot commits</div><div>${esc((runtime.commit_log??[]).length)} / ${esc(runtime.save_engine?.hot_commit_log_limit??20)}</div><div class="k">Delta Journal</div><div>${esc(journal.length)} 筆</div><div class="k">Checkpoints</div><div>${esc(checkpoints.length)} 個</div><div class="k">Cold Archive</div><div>${esc(coldArchive.length)} 筆</div><div class="k">上次 Checkpoint</div><div>${esc(runtime.save_engine?.last_checkpoint_revision==null?'尚未建立':`rev ${runtime.save_engine.last_checkpoint_revision}`)}</div>`;
-  const j=$('#journalList'); if(j) j.innerHTML=(journal.slice(-12).reverse().map(x=>{const c=x.commit??{};return `<div class="item"><b>${esc(c.accepted_by||'COMMIT')}</b> rev ${esc(c.from_revision)} → ${esc(c.to_revision)}<br><span class="small">${esc(c.turn_id||'')} ${esc((c.event_refs??[]).join(', '))}</span></div>`}).join('')||'<div class="small">尚無 Delta Journal。</div>');
-  const sel=$('#archiveCandidateSelect'); if(sel){const rows=(runtime.active_events??[]).map(e=>({e,v:Core.archiveEligibility(e)}));const ok=rows.filter(x=>x.v.ok);sel.innerHTML=ok.length?ok.map(x=>`<option value="${esc(x.e.event_id)}">${esc(x.e.event_id)}｜${esc(x.e.name||'')}</option>`).join(''):'<option value="">目前沒有符合硬條件的事件</option>';}
-  const a=$('#archiveList'); if(a) a.innerHTML=(coldArchive.slice(-10).reverse().map(x=>`<div class="item"><b>${esc(x.event_id)}</b> • rev ${esc(x.archived_at_revision)}<br><span class="small">${esc(x.archived_at_world_time||'')}</span></div>`).join('')||'<div class="small">尚無 Cold Archive。</div>');
-}
-
-function renderPacks(){
-  const list=$('#packList'); if(!list) return;
-  const count=PACK_SLOTS.filter(s=>privatePacks?.[s.slot]).length;
-  const health=$('#packHealth'); if(health){health.textContent=`${count} / ${PACK_SLOTS.length}`;health.className='pill '+(count===PACK_SLOTS.length?'status-good':'');}
-  list.innerHTML=PACK_SLOTS.map(s=>{
-    const p=privatePacks?.[s.slot];
-    if(!p) return `<div class="item"><b>${esc(s.label)}</b><br><span class="small">尚未匯入</span></div>`;
-    const m=p.meta||{};
-    const hash=m.sha256?String(m.sha256).slice(0,12)+'…':'未提供';
-    return `<div class="item"><b>${esc(s.label)}</b> <span class="pill status-good">已載入</span><br><span class="small">${esc(m.title||m.filename||'')}<br>版本：${esc(m.version||'未標示')}｜hash：${esc(hash)}</span></div>`;
-  }).join('');
-}
-function runtimeValid(){return runtime?Core.validateRuntime(runtime):{pass:false,errors:['NO_RUNTIME']}}
-function sceneLoc(){return entityName(runtime?.current_scene?.location_entity_id)}
+const store=new LocalStore();let state=E.emptyState(),parsed=null,currentRequest=null,busy=false;
+const $=s=>document.querySelector(s),$$=s=>[...document.querySelectorAll(s)];
+const esc=x=>String(x??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const pretty=x=>JSON.stringify(x,null,2);
+const box=(x,bad=false)=>`<div class="notice ${bad?'bad':'good'}">${esc(x)}</div>`;
+const name=id=>state.runtime?.entity_registry.find(e=>e.entity_id===id)?.canonical_name??id;
+async function change(next){next={...next,operations:compactOperations(next.operations),checkpoints:compactAutoCheckpoints(next.checkpoints)};await store.save(next);state=next;render();}
+function bind(id,fn,target='#importStatus'){$(id).onclick=async()=>{if(busy)return;busy=true;$$('button').forEach(b=>b.disabled=true);try{await fn();}catch(e){$(target).innerHTML=box(e.message,true);}finally{busy=false;$$('button').forEach(b=>b.disabled=false);}};}
+function download(x,filename){const b=new Blob([pretty(x)],{type:'application/json'}),url=URL.createObjectURL(b),a=document.createElement('a');a.href=url;a.download=filename;a.click();setTimeout(()=>URL.revokeObjectURL(url),1000);}
+async function exportFull(){download(await E.backup(state),`Aethergard_FULL_BACKUP_rev${state.runtime.state_revision}_PRIVATE.json`);}
 function render(){
-  const vr=runtimeValid();
-  const metrics=[['Revision',runtime?`rev ${runtime.state_revision}`:'未載入'],['世界時間',runtime?.simulation_time?.current_world_datetime??'未載入'],['地點',runtime?sceneLoc():'未載入'],['Pending',runtime?.pending_turn?'等待接受':'無'],['Packs',`${PACK_SLOTS.filter(s=>privatePacks?.[s.slot]).length}/6`]];
-  $('#metrics').innerHTML=metrics.map(([l,v])=>`<div class="card metric"><div class="label">${esc(l)}</div><div class="value">${esc(v)}</div></div>`).join('');
-  $('#runtimeHealth').textContent=vr.pass?'Runtime PASS':runtime?'Runtime FAIL':'尚未載入'; $('#runtimeHealth').className='pill '+(vr.pass?'status-good':runtime?'status-bad':'');
-  $('#handoff').innerHTML=runtime?esc(runtime.current_scene?.exact_handoff||'無精確承接點'): '請先到「匯入／備份」載入你的 Runtime。';
-  const present=(runtime?.current_scene?.present_entities??[]).map(entityName).join('、')||'無';
-  $('#sceneSummary').innerHTML=runtime?`<div class="k">在場</div><div>${esc(present)}</div><div class="k">未完對話</div><div>${esc((runtime.current_scene?.unresolved_dialogue_threads??[]).join('；')||'無')}</div><div class="k">有效事件</div><div>${esc((runtime.active_events??[]).filter(e=>e.status==='ACTIVE').map(e=>e.event_id).join('、')||'無')}</div>`:'';
-  $('#pendingPill').textContent=runtime?.pending_turn?`Pending ${runtime.pending_turn.turn_id}`:'無 Pending';
-  $('#revisionPill').textContent=runtime?`rev ${runtime.state_revision}`:'rev ?';
-  renderActors(); renderCollections(); renderState(); renderHistory(); renderSaveEngine(); renderPacks();
+ const rt=state.runtime,s=E.status(state);
+ $('#metrics').innerHTML=[['Revision',s.revision??'未載入'],['世界時間',s.world_time??'未載入'],['地點',rt?name(rt.current_scene.location_entity_id):'未載入'],['候選回合',s.pending_turn_id?'等待接受':'無'],['來源',`${s.pack_count}/6`]].map(([l,v])=>`<div class="card metric"><div class="label">${esc(l)}</div><div class="value">${esc(v)}</div></div>`).join('');
+ $('#handoff').textContent=s.exact_handoff||'請匯入現有 Runtime 或完整備份。';$('#runtimeHealth').textContent=rt?'資料結構已驗證':'尚未匯入';$('#pendingPill').textContent=s.pending_turn_id?'等待接受':'無候選回合';$('#revisionPill').textContent=`rev ${s.revision??'?'}`;
+ $('#sceneSummary').innerHTML=rt?`<div class="k">在場</div><div>${esc(rt.current_scene.present_entities.map(name).join('、'))}</div><div class="k">未完對話</div><div>${esc(pretty(rt.current_scene.unresolved_dialogue_threads))}</div>`:'';
+ $('#actorSelect').innerHTML=(rt?.character_runtime||[]).map(c=>`<option value="${esc(c.entity_id)}">${esc(name(c.entity_id))}</option>`).join('');
+ const selector=$('#stateCollection'),previous=selector.value;selector.innerHTML=Object.keys(rt||{}).map(k=>`<option>${esc(k)}</option>`).join('');if(previous)selector.value=previous;renderState();
+ $('#packHealth').textContent=`${s.pack_count}/6`;
+ $('#packList').innerHTML=E.SLOTS.map(slot=>`<div class="item"><b>${esc(slot)}</b><br>${state.packs[slot]?`${esc(state.packs[slot].title)}<br><span class="small">完整性已核對 · ${state.packs[slot].sections.length} 個檢索區段</span>`:'尚未匯入'}</div>`).join('');
+ $('#historyList').innerHTML=state.checkpoints.slice(-20).reverse().map(c=>`<div class="item">${esc(c.label)} · rev ${esc(c.revision)} <button data-restore="${esc(c.checkpoint_id)}">還原</button></div>`).join('')||'尚無檢查點';
+ $$('[data-restore]').forEach(b=>b.onclick=()=>{if(confirm('還原會建立新分支，並保留還原前快照。確定嗎？'))change(E.restoreCheckpoint(state,b.dataset.restore)).catch(e=>$('#rollbackStatus').innerHTML=box(e.message,true));});
+ $('#saveEngineMetrics').innerHTML=`<div class="k">近期 Commit</div><div>${rt?.commit_log?.length??0} / 20</div><div class="k">歷史</div><div>${state.journal.length} 回</div><div class="k">檢查點</div><div>${state.checkpoints.length}</div><div class="k">技術垃圾</div><div>上次自動清理 ${store.lastCleanup.removed} 筆 · 保留 ${store.lastCleanup.retained} 區塊</div><div class="k">自動快照</div><div>還原/回滾各最多 10 · 匯入前最多 5；手動 Checkpoint 不自動刪除</div>`;
+ $('#journalList').innerHTML=state.journal.slice(-12).reverse().map(j=>`<div class="item">rev ${j.commit.from_revision} → ${j.commit.to_revision}<br>${esc((j.commit.narration||'舊版未記錄正文').slice(0,120))}</div>`).join('');
+ $('#archiveCandidateSelect').innerHTML=(rt?.active_events||[]).filter(e=>['RESOLVED','ENDED','CLOSED','COLD','ARCHIVE_READY'].includes(e.status)).map(e=>`<option value="${esc(e.event_id)}">${esc(e.name||e.event_id)}</option>`).join('');$('#archiveList').innerHTML=state.cold_archive.map(a=>`<div class="item">${esc(a.event_id)}</div>`).join('');
 }
+function renderState(){$('#statePreview').textContent=pretty(state.runtime?.[$('#stateCollection').value]??null);}
+$('#tabs').onclick=e=>{const b=e.target.closest('[data-tab]');if(!b)return;$$('#tabs button').forEach(x=>x.classList.toggle('active',x===b));$$('.tab').forEach(x=>x.classList.remove('active'));$(`#tab-${b.dataset.tab}`).classList.add('active');};$('#stateCollection').onchange=renderState;
+bind('#parseBtn',async()=>{if(!state.runtime)throw new Error('請先匯入存檔。');parsed={raw:$('#playerInput').value};$('#parseResult').classList.remove('hidden');$('#nonspokenWarning').textContent='原文只會在完成分類後交给回合流程。可觀察動作必須逐字取自輸入；內心不給 NPC。';$('#observableAction').value='';$('#privateContent').value='';$('#oocContent').value='';},'#candidateStatus');
+bind('#classifyBtn',async()=>{if(!parsed)throw new Error('請先解析輸入。');const out=await E.beginTurn(state,{message_id:E.uid('message'),raw:parsed.raw,signal:$('#turnSignal').value,observable:$('#observableAction').value,private_text:$('#privateContent').value,ooc:$('#oocContent').value,pending_turn_id:state.runtime.pending_turn?.turn_id});await change(out.state);currentRequest=out.result;$('#requestPreview').textContent=pretty(currentRequest);$('#requestArea').classList.remove('hidden');},'#candidateStatus');
+bind('#clearTurnBtn',async()=>{$('#playerInput').value='';$('#candidateInput').value='';$('#parseResult').classList.add('hidden');$('#requestArea').classList.add('hidden');parsed=null;currentRequest=null;});
+bind('#allPrivateBtn',async()=>{$('#privateContent').value=parsed?.raw||'';$('#observableAction').value='';});bind('#allObservableBtn',async()=>{$('#observableAction').value=parsed?.raw||'';$('#privateContent').value='';});
+bind('#copyRequestBtn',async()=>{if(currentRequest)await navigator.clipboard.writeText(pretty(currentRequest));});bind('#shareRequestBtn',async()=>{if(currentRequest){if(navigator.share)await navigator.share({text:pretty(currentRequest)});else await navigator.clipboard.writeText(pretty(currentRequest));}});
+bind('#validateCandidateBtn',async()=>{const out=await E.stageTurn(state,E.safeJSON($('#candidateInput').value));await change(out.state);$('#candidateStatus').innerHTML=box('結構、來源與涵蓋檢查通過；已保存候選回合，尚未接受。語意審查為模型審查。');},'#candidateStatus');
+bind('#rejectPendingBtn',async()=>{const out=E.discardTurn(state,{request_id:state.active_request?.id,pending_turn_id:state.runtime?.pending_turn?.turn_id});await change(out.state);$('#candidateStatus').innerHTML=box('候選回合作廢，正式歷史未改。');},'#candidateStatus');
+bind('#buildPacketBtn',async()=>{$('#packetPreview').textContent=pretty(E.actorPacket(state.runtime,$('#actorSelect').value,state.active_request?.input));});bind('#copyPacketBtn',async()=>navigator.clipboard.writeText($('#packetPreview').textContent));
+bind('#importRuntimeBtn',async()=>{const file=$('#runtimeFile').files?.[0];if(!file)throw new Error('請先選 JSON。');if(state.runtime&&!confirm('目前進度會先留檢查點，再匯入這份存檔。確定嗎？'))return;let next=await E.importBackup(E.safeJSON(await file.text()));if(!Object.keys(next.packs).length)next.packs=state.packs;if(state.runtime)next.checkpoints=[...E.checkpoint(state,'匯入前快照').checkpoints,...next.checkpoints];await change(next);$('#importStatus').innerHTML=box('已完整驗證並匯入。');});
+bind('#importPacksBtn',async()=>{const files=[...$('#packFiles').files];if(!files.length)throw new Error('請先選資料包。');const packs=await Promise.all(files.map(async f=>E.safeJSON(await f.text())));if(state.runtime||Object.keys(state.packs).length)await exportFull();await change(await E.importPacks(state,packs));$('#packImportStatus').innerHTML=box('本機備援 Packs 已核對並保存；更新前完整備份已下載。Project 的 Live Controller 未被修改。');},'#packImportStatus');
+bind('#exportPackManifestBtn',async()=>download({versions:E.packVersions(state),packs:Object.fromEntries(Object.entries(state.packs).map(([k,p])=>[k,{title:p.title,sections:p.sections.length}]))},'Aethergard_Pack_Manifest.json'));
+for(const id of ['#fullBackupBtn','#exportHandoverBtn','#handoverSaveBtn'])bind(id,exportFull);
+bind('#exportRuntimeBtn',async()=>download(state.runtime,`Aethergard_Runtime_rev${state.runtime.state_revision}_PRIVATE.json`));bind('#shareRuntimeBtn',exportFull);
+for(const id of ['#checkpointBtn','#quickCheckpointBtn'])bind(id,async()=>{await change(E.checkpoint(state,'手動檢查點'));$('#archiveStatus').innerHTML=box('已保存檢查點，候選狀態保留。');});
+bind('#validateRuntimeBtn',async()=>{E.validateRuntime(state.runtime);$('#importStatus').innerHTML=box('資料結構通過。這不代表人物與正文的語意已獲保證。');});
+bind('#rollbackBtn',async()=>{const v=Number($('#rollbackRefs').value);if(!Number.isInteger(v))throw new Error('請輸入要回到的版本號。');if(confirm(`回到 rev ${v}，撤回之後的回合並建立新分支？`)){await change(E.rollbackTo(state,v));$('#rollbackStatus').innerHTML=box('已回滾；回滾前快照已保留。');}},'#rollbackStatus');
+bind('#archiveEventBtn',async()=>{await change(E.archiveEvent(state,$('#archiveCandidateSelect').value));$('#archiveStatus').innerHTML=box('事件已封存，有效牽連檢查通過。');},'#archiveStatus');
+bind('#wipePacksBtn',async()=>{if(state.active_request)throw new Error('先完成或丟棄目前回合。');if(confirm('清空目前資料包？完整備份仍可還原。'))await change({...state,packs:{}});},'#packImportStatus');
+bind('#wipeBtn',async()=>{if(confirm('重設目前存檔？會先下載完整備份，原 v2 資料仍保留於瀏覽器。')){if(state.runtime)await exportFull();await change({...E.emptyState(),packs:state.packs});}});
+bind('#searchPacksBtn',async()=>{if(!state.active_request)throw new Error('請先建立回合請求。');const rows=E.searchSections(state,{query:$('#packQuery').value,slots:E.SLOTS,limit:8});const out=E.readSections(state,{request_id:state.active_request.id,section_ids:rows.map(x=>x.id)});await change(out.state);$('#packSearchResults').textContent=pretty(out.result);},'#packImportStatus');
+try{state=await store.load();render();}catch(e){$('#importStatus').innerHTML=box('載入失敗，原資料未改：'+e.message,true);}
 
-function renderActors(){const sel=$('#actorSelect'); const before=sel.value; sel.innerHTML=(runtime?.entity_registry??[]).filter(e=>(runtime.character_runtime??[]).some(c=>c.entity_id===e.entity_id)).map(e=>`<option value="${esc(e.entity_id)}">${esc(e.canonical_name)}</option>`).join(''); if([...sel.options].some(o=>o.value===before))sel.value=before;}
-function renderCollections(){const keys=['world_state','entity_registry','character_runtime','current_scene','perception_evidence','knowledge_records','memory_records','belief_records','relationships','commitments','goals_and_projects','active_events','world_processes','schedules','ongoing_actions_and_effects','capability_state','calibration','commit_log','save_engine','archive_index','audit_state'];const s=$('#stateCollection');if(!s.options.length)s.innerHTML=keys.map(k=>`<option>${k}</option>`).join('');}
-function renderState(){const k=$('#stateCollection')?.value||'world_state';$('#statePreview').textContent=runtime?pretty(runtime[k]):'尚未載入。';}
-function renderHistory(){if(!runtime){$('#historyList').innerHTML=statusBox('尚未載入 Runtime','warn');return} const commits=(runtime.commit_log??[]).slice(-12).reverse().map(c=>`<div class="item"><b>${esc(c.accepted_by||'COMMIT')}</b> rev ${esc(c.from_revision)} → ${esc(c.to_revision)}<br><span class="small">${esc(c.turn_id||'')} ${esc((c.event_refs??[]).join(', '))}</span></div>`);const cps=checkpoints.slice().reverse().map((c,i)=>`<div class="item"><b>Checkpoint</b> ${esc(c.label)} • rev ${esc(c.revision)} <button data-restore-cp="${esc(c.checkpoint_id)}" style="float:right;padding:4px 7px;font-size:11px">還原</button></div>`);$('#historyList').innerHTML=[...cps,...commits].join('')||'<div class="small">尚無歷史。</div>';$$('[data-restore-cp]').forEach(b=>b.onclick=async()=>{if(!confirm('確定還原此 Checkpoint？目前 Runtime 會被取代。'))return;const cp=checkpoints.find(c=>c.checkpoint_id===b.dataset.restoreCp);runtime=Core.restoreCheckpoint(cp);await save();});}
-
-function handlePriorSignal(signal){if(!runtime?.pending_turn)return {ok:true};const r=Core.handlePreviousPending(runtime,signal);runtime=r.runtime;if(r.action==='COMMIT_FAILED')return {ok:false,errors:r.errors};if(r.action==='COMMITTED')captureLatestCommitToJournal();return {ok:true,action:r.action};}
-function parseInput(){if(!runtime){$('#parseResult').classList.remove('hidden');$('#nonspokenWarning').innerHTML='請先匯入 Runtime。';return} const raw=$('#playerInput').value; const signal=$('#turnSignal').value; const prior=handlePriorSignal(signal); if(!prior.ok){$('#candidateStatus').innerHTML=statusBox(`上一回 Commit 失敗：${prior.errors.join(' | ')}`,'bad');return} parsed=Core.parsePlayerInput(raw,runtime.player_contract?.spoken_delimiters??['「','」']);$('#parseResult').classList.remove('hidden');$('#requestArea').classList.add('hidden');$('#observableAction').value='';$('#privateContent').value='';$('#oocContent').value=signal==='OOC'?parsed.outside_quotes:'';const spoken=parsed.spoken_dialogue.length?`說出口：${parsed.spoken_dialogue.map(x=>`「${x}」`).join(' / ')}`:'沒有偵測到「」內台詞';const outside=parsed.outside_quotes?`「」外有內容，預設不給 NPC：${parsed.outside_quotes}`:'「」外沒有內容。';$('#nonspokenWarning').textContent=`${spoken}。${outside}`; save();}
-function finishClassification(){if(!parsed||!runtime)return; classified=Core.classifyPlayerNonspoken(parsed,{observableAction:$('#observableAction').value,privateContent:$('#privateContent').value||null,ooc:$('#oocContent').value||null}); currentRequest={protocol:'AETHERGARD_CONTROLLER_BRIDGE_V2.3',based_on_revision:runtime.state_revision,world_time:runtime.simulation_time.current_world_datetime,exact_handoff:runtime.current_scene.exact_handoff,signal:$('#turnSignal').value,player_input:classified,required_output:{format:'JSON_ONLY',fields:['narration','candidate_deltas','narration_claims','validation'],rules:['candidate_deltas must carry source_refs','validation.pre_render and validation.post_render must be PASS only after actual checks','do not commit; Controller validates and stages Pending']},actor_packet_note:'Use Controller-provided actor-safe packets for NPC decisions; UNKNOWN truth is not permission to infer.'};$('#requestPreview').textContent=pretty(currentRequest);$('#requestArea').classList.remove('hidden');}
-function validateCandidate(){if(!runtime||!classified){$('#candidateStatus').innerHTML=statusBox('請先完成玩家輸入解析與分類。','warn');return}let env;try{env=JSON.parse($('#candidateInput').value)}catch(e){$('#candidateStatus').innerHTML=statusBox(`JSON 無法解析：${e.message}`,'bad');return}const pending=Core.createPendingTurn(runtime,{parsedPlayerInput:classified,candidateDeltas:env.candidate_deltas??[],narration:env.narration??'',narrationClaims:env.narration_claims??[],preRender:env.validation?.pre_render??'NOT_RUN',postRender:env.validation?.post_render??'NOT_RUN'});const v=Core.validatePendingTurn(runtime,pending);if(!v.pass){$('#candidateStatus').innerHTML=statusBox(`FAIL：${v.errors.join(' | ')}`,'bad');return}runtime.pending_turn=pending;$('#candidateStatus').innerHTML=statusBox('PASS：已建立 Pending Turn。尚未 Commit；你下一則世界內 RP 輸入時會自動接受上一回。','good');save();}
-
-function buildPacket(){if(!runtime){$('#packetPreview').textContent='請先匯入 Runtime。';return}const actor=$('#actorSelect').value;if(!actor)return;currentPacket=Core.buildPrivateCharacterPacket(runtime,actor,{playerParsed:classified,allowPlayerPrivate:false});$('#packetPreview').textContent=pretty(currentPacket);}
-
-$('#tabs').onclick=e=>{const b=e.target.closest('[data-tab]');if(!b)return;$$('#tabs button').forEach(x=>x.classList.toggle('active',x===b));$$('.tab').forEach(x=>x.classList.remove('active'));$(`#tab-${b.dataset.tab}`).classList.add('active');}
-$('#stateCollection').onchange=renderState;
-$('#parseBtn').onclick=parseInput;$('#clearTurnBtn').onclick=()=>{$('#playerInput').value='';$('#candidateInput').value='';$('#parseResult').classList.add('hidden');$('#requestArea').classList.add('hidden');parsed=classified=currentRequest=null;};
-$('#allPrivateBtn').onclick=()=>{$('#privateContent').value=parsed?.outside_quotes??'';$('#observableAction').value='';};$('#allObservableBtn').onclick=()=>{$('#observableAction').value=parsed?.outside_quotes??'';$('#privateContent').value='';};$('#classifyBtn').onclick=finishClassification;
-$('#copyRequestBtn').onclick=async()=>{if(currentRequest){await copyText(pretty(currentRequest));$('#copyRequestBtn').textContent='已複製';setTimeout(()=>$('#copyRequestBtn').textContent='複製 Request',1200)}};$('#shareRequestBtn').onclick=()=>currentRequest&&shareText(pretty(currentRequest));
-$('#validateCandidateBtn').onclick=validateCandidate;$('#rejectPendingBtn').onclick=async()=>{if(runtime?.pending_turn){runtime.pending_turn=null;await save();$('#candidateStatus').innerHTML=statusBox('Pending 已丟棄。','warn')}};
-$('#buildPacketBtn').onclick=buildPacket;$('#copyPacketBtn').onclick=()=>currentPacket&&copyText(pretty(currentPacket));
-$('#checkpointBtn').onclick=async()=>{if(!runtime)return;const label=prompt('Checkpoint 名稱',`rev-${runtime.state_revision}`)||`rev-${runtime.state_revision}`;createLocalCheckpoint(label);await save();};
-$('#exportHandoverBtn').onclick=()=>runtime&&downloadJSON(`Aethergard_Handover_rev${runtime.state_revision}.json`,Core.buildHandover(runtime));
-$('#rollbackBtn').onclick=async()=>{if(!runtime)return;const refs=$('#rollbackRefs').value.split(',').map(s=>s.trim()).filter(Boolean);if(!refs.length){$('#rollbackStatus').innerHTML=statusBox('請輸入至少一個 event ref。','warn');return}if(!confirm(`確定讓 ${refs.join(', ')} 失效並建立新的 rollback revision？`))return;runtime=Core.rollbackContaminated(runtime,{eventRefs:refs,reason:'USER_CONFIRMED_ERROR'});captureLatestCommitToJournal();$('#rollbackStatus').innerHTML=statusBox(`已建立 rev ${runtime.state_revision}。`,'good');await save();};
-$('#importRuntimeBtn').onclick=async()=>{const f=$('#runtimeFile').files?.[0];if(!f){$('#importStatus').innerHTML=statusBox('請先選 JSON。','warn');return}try{const x=JSON.parse(await f.text());if(x.bundle_type==='AETHERGARD_CONTROLLER_BACKUP'){runtime=Core.upgradeRuntimeForSaveEngine(x.runtime);journal=Array.isArray(x.delta_journal)?x.delta_journal:[];coldArchive=Array.isArray(x.cold_archive)?x.cold_archive:[];checkpoints=Array.isArray(x.checkpoints)?x.checkpoints:[];}else{runtime=Core.upgradeRuntimeForSaveEngine(x);}const v=Core.validateRuntime(runtime);if(!v.pass){$('#importStatus').innerHTML=statusBox(`拒絕匯入：${v.errors.join(' | ')}`,'bad');return}await save();$('#importStatus').innerHTML=statusBox(`已匯入 ${f.name}，rev ${runtime.state_revision}。`,'good')}catch(e){$('#importStatus').innerHTML=statusBox(`匯入失敗：${e.message}`,'bad')}};
-$('#exportRuntimeBtn').onclick=()=>runtime&&downloadJSON(`Aethergard_Runtime_v2_CURRENT_rev${runtime.state_revision}.json`,runtime);$('#shareRuntimeBtn').onclick=()=>runtime&&shareJSON(`Aethergard_Runtime_v2_CURRENT_rev${runtime.state_revision}.json`,runtime);$('#validateRuntimeBtn').onclick=()=>{const v=runtimeValid();$('#importStatus').innerHTML=statusBox(v.pass?'Runtime PASS':`Runtime FAIL：${v.errors.join(' | ')}`,v.pass?'good':'bad')};
-$('#quickCheckpointBtn').onclick=async()=>{if(!runtime)return;createLocalCheckpoint(`quick-rev-${runtime.state_revision}`);await save();$('#archiveStatus').innerHTML=statusBox(`已建立本機 Checkpoint：rev ${runtime.state_revision}。未重寫大型 TXT。`,'good');};
-$('#fullBackupBtn').onclick=()=>{const b=buildFullBackup();if(b)downloadJSON(`Aethergard_Controller_FULL_BACKUP_rev${runtime.state_revision}.json`,b);};
-$('#handoverSaveBtn').onclick=()=>runtime&&downloadJSON(`Aethergard_Handover_rev${runtime.state_revision}.json`,Core.buildHandover(runtime));
-$('#archiveEventBtn').onclick=async()=>{if(!runtime)return;const id=$('#archiveCandidateSelect').value;if(!id){$('#archiveStatus').innerHTML=statusBox('目前沒有符合硬條件的事件。這是保護機制，不會因低頻就亂封存。','warn');return}try{const rec=Core.makeColdArchiveRecord(runtime,id);coldArchive.push(rec);runtime=Core.removeColdEventFromHotRuntime(runtime,id,rec);await save();$('#archiveStatus').innerHTML=statusBox(`${id} 已從 Hot Runtime 搬入 Cold Archive。`,'good')}catch(e){$('#archiveStatus').innerHTML=statusBox(`封存拒絕：${e.message}`,'bad')}};
-
-$('#importPacksBtn').onclick=async()=>{
-  const files=[...($('#packFiles').files||[])];
-  if(!files.length){$('#packImportStatus').innerHTML=statusBox('請先選至少一份 Pack JSON。','warn');return}
-  const accepted=[],rejected=[];
-  for(const f of files){
-    try{
-      const x=JSON.parse(await f.text());
-      const slot=detectPackSlot(x);
-      if(!slot){rejected.push(`${f.name}：無法辨識 Pack 類型`);continue}
-      privatePacks[slot]={data:x,meta:packMeta(x,f.name)};
-      accepted.push(`${f.name} → ${slot}`);
-    }catch(e){rejected.push(`${f.name}：${e.message}`)}
-  }
-  await setKV(PACKS_KEY,privatePacks);
-  render();
-  const msg=[accepted.length?`已匯入／更新 ${accepted.length} 份。`:'',rejected.length?`拒絕 ${rejected.length} 份：${rejected.join('；')}`:''].filter(Boolean).join(' ');
-  $('#packImportStatus').innerHTML=statusBox(msg,rejected.length?'warn':'good');
-};
-$('#exportPackManifestBtn').onclick=()=>downloadJSON('Aethergard_Private_Pack_Manifest.json',packManifest());
-$('#wipePacksBtn').onclick=async()=>{
-  if(!confirm('確定只清除 Safari 內的私人 Packs？Runtime／Journal／Archive 不會被刪除。'))return;
-  privatePacks={}; await delKV(PACKS_KEY); render();
-  $('#packImportStatus').innerHTML=statusBox('私人 Packs 已清除；Runtime 未變更。','warn');
-};
-$('#wipeBtn').onclick=async()=>{if(!confirm('確定清除這個網站在 Safari 裡保存的艾瑟加德 Runtime 與 Checkpoints？請先備份。'))return;runtime=null;checkpoints=[];journal=[];coldArchive=[];await delKV(RUNTIME_KEY);await delKV(CPS_KEY);await delKV(JOURNAL_KEY);await delKV(ARCHIVE_KEY);render();};
-
-(async()=>{runtime=await getKV(RUNTIME_KEY).catch(()=>null);if(runtime)runtime=Core.upgradeRuntimeForSaveEngine(runtime);checkpoints=await getKV(CPS_KEY).catch(()=>[])||[];journal=await getKV(JOURNAL_KEY).catch(()=>[])||[];coldArchive=await getKV(ARCHIVE_KEY).catch(()=>[])||[];privatePacks=await getKV(PACKS_KEY).catch(()=>({}))||{};if(runtime){runtime.save_engine.journal_count=journal.length;runtime.save_engine.cold_archive_count=coldArchive.length;}render();})();
-
-</script>
-</body></html>
+</script></body></html>
