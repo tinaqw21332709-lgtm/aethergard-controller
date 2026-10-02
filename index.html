@@ -8,7 +8,7 @@
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
   <meta name="apple-mobile-web-app-title" content="艾瑟加德 Controller" />
   <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; connect-src 'self'; object-src 'none'; base-uri 'self'; form-action 'self'">
-<title>艾瑟加德 RP Controller v3.2</title>
+<title>艾瑟加德 RP Controller v3.3.1</title>
   <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 32 32%27%3E%3Crect width=%2732%27 height=%2732%27 rx=%277%27 fill=%27%23201b35%27/%3E%3Cpath d=%27M8 7h16v18H8zM16 7v18%27 fill=%27none%27 stroke=%27%23cbb8fa%27 stroke-width=%272%27/%3E%3C/svg%3E"><style>
     :root{color-scheme:dark;--bg:#0b1020;--panel:#111827;--panel2:#172033;--line:#2b3953;--text:#eef2ff;--muted:#a7b0c3;--good:#4ade80;--warn:#fbbf24;--bad:#fb7185;--accent:#a78bfa;--accent2:#7dd3fc}
     *{box-sizing:border-box} body{margin:0;background:linear-gradient(180deg,#0b1020,#0c1428 70%,#0b1020);color:var(--text);font-family:-apple-system,BlinkMacSystemFont,"SF Pro Text","PingFang TC","Noto Sans TC",sans-serif;min-height:100vh}
@@ -33,29 +33,34 @@
   </style>
 </head>
 <body>
-<header><h1>艾瑟加德 RP Controller <span class="accent">v3.2.1</span></h1><p>維護／備援控制台｜正常 RP 只在 ChatGPT Project 進行</p></header>
-<main><div class="notice good" style="margin-bottom:14px"><b>正常遊玩只在 ChatGPT 的《艾瑟加德》Project 聊天室。</b><br>這個 GitHub Pages 頁面只做備份、檢視、匯入與維護，不再要求你把每回合內容在兩邊複製貼上。本機資料不會自行上傳。<br><b>注意：這個本機備援頁不會自動同步或改寫 Project 內正在使用的 Live Controller。</b></div>
+<header><h1>艾瑟加德 RP Controller <span class="accent">v3.3.1</span></h1><p>維護／備援控制台｜正常 RP 只在 ChatGPT Project 進行</p></header>
+<main><div class="notice good" style="margin-bottom:14px"><b>正常遊玩與正式來源更新都以 ChatGPT《艾瑟加德》Project／Live Controller 為主。</b><br>這個 GitHub Pages 頁面只做本機備份、檢視、匯入與災難復原；平常不用再手動同步六份來源，也不用把每回合內容在兩邊複製貼上。<br><b>正式來源以 ChatGPT Project 內目前資料來源為準。</b> 本頁不自行判定哪個版本最新，也不會自動改寫 Live Controller。</div>
   <div class="grid topgrid" id="metrics"></div>
   <div style="height:12px"></div>
   <nav id="tabs">
     <button data-tab="home" class="active">總覽</button>
     <button data-tab="state">狀態檢視</button>
-    <button data-tab="history">版本／回滾</button>
-    <button data-tab="saveengine">存檔引擎</button>
-    <button data-tab="packs">私人 Packs</button>
-    <button data-tab="settings">匯入／備份</button>
+    <button data-tab="history">本機檢查點</button>
+    <button data-tab="saveengine">本機存檔</button>
+        <button data-tab="settings">本機匯入／備份</button>
   </nav>
 
   <section id="tab-home" class="tab active">
     <div class="card">
-      <div class="section-title"><h2>目前承接</h2><span class="pill" id="runtimeHealth">尚未載入</span></div>
-      <div id="handoff" class="notice">請先到「匯入／備份」載入你的 <code>Aethergard_Runtime_v2_CURRENT.json</code>。</div>
+      <div class="section-title"><h2>本機備援承接</h2><span class="pill" id="runtimeHealth">尚未載入</span></div>
+      <div id="handoff" class="notice">這裡顯示的是 Safari 本機備援，不是 Live Controller。需要災難復原或離線檢查時，才到「匯入／備份」載入備份檔。</div>
       <div style="height:10px"></div><div id="sceneSummary" class="kv"></div>
     </div>
     <div style="height:12px"></div>
     <div class="card">
       <div class="section-title"><h2>隱私與權威</h2><span class="pill">公開網站也不會上傳 Runtime</span></div>
       <div class="notice good">這個網頁本身不含艾瑟加德劇情資料。你匯入的 Runtime 只保存在這個網站於 Safari 的本機儲存空間。公開 GitHub Pages 時，只需要上傳這一個 <code>index.html</code>。</div>
+    </div>
+    <div style="height:12px"></div>
+    <div class="card">
+      <div class="section-title"><h2>之後更新正式資料怎麼做</h2><span class="pill">Work 式維護</span></div>
+      <div class="notice good"><b>不用再到這個網頁更新六份來源，也不要為了更新 Core／Presentation 特地來這裡匯入。</b><br>在 ChatGPT Project 裡換好／提供新版正式文件後，交給 Live Controller 做差異比對、只更新有變更的 slot、保留必要 rollback、清理技術垃圾，再核對 Runtime／Canon 沒被維護誤改。<br>這個頁面只在你要做離線備份、檢查本機快照或災難復原時才需要打開。</div>
+      <div class="notice warn" style="margin-top:10px">Project「資料來源」附件本身仍由 ChatGPT Project 介面管理；本頁無法替 Project 刪除或替換附件。</div>
     </div>
   </section>
 
@@ -101,14 +106,14 @@
   </section>
 
   <section id="tab-state" class="tab">
-    <div class="card"><div class="section-title"><h2>Runtime 狀態</h2><span class="pill">只讀檢視</span></div>
+    <div class="card"><div class="section-title"><h2>本機 Runtime 狀態</h2><span class="pill">只讀檢視</span></div>
       <label>資料區</label><select id="stateCollection"></select>
       <div id="statePreview" class="mono" style="margin-top:10px">尚未載入。</div>
     </div>
   </section>
 
   <section id="tab-history" class="tab">
-    <div class="card"><div class="section-title"><h2>版本與檢查點</h2><span class="pill" id="revisionPill">rev ?</span></div>
+    <div class="card"><div class="section-title"><h2>本機版本與檢查點</h2><span class="pill" id="revisionPill">rev ?</span></div>
       <div class="toolbar"><button id="checkpointBtn" class="good">建立 Checkpoint</button><button id="exportHandoverBtn">下載完整備份（可搬家）</button></div>
       <div id="historyList" class="list" style="margin-top:12px"></div>
     </div>
@@ -124,7 +129,7 @@
   <section id="tab-saveengine" class="tab">
     <div class="card">
       <div class="section-title"><h2>v1.11 增量存檔引擎</h2><span class="pill">回合增量記錄</span></div>
-      <div class="notice good">正常 RP Commit 只追加 Delta Journal 並更新 CURRENT。角色卡／劇情事件總檔不會因每一回合而整份重寫。v3.2.1 每次保存會自動刪除不再被 CURRENT／Packs／Journal／Archive／Checkpoint 引用的技術區塊，並把已處理訊息去重表限制在最近 128 筆。新建 Checkpoint 不再複製六份 Packs；還原／回滾／匯入前的自動快照只保留最近有限筆，避免備援本身越存越肥。Delta Journal 與 Cold Archive 是正式劇情歷史，不會被當技術垃圾刪除。</div>
+      <div class="notice good">正常 RP Commit 只追加 Delta Journal 並更新 CURRENT。角色卡／劇情事件總檔不會因每一回合而整份重寫。v3.3.1 每次保存會自動刪除不再被 CURRENT／Packs／Journal／Archive／Checkpoint 引用的技術區塊，並把已處理訊息去重表限制在最近 128 筆。新建 Checkpoint 不再複製六份 Packs；還原／回滾／匯入前的自動快照只保留最近有限筆，避免備援本身越存越肥。Delta Journal 與 Cold Archive 是正式劇情歷史，不會被當技術垃圾刪除。</div>
       <div id="saveEngineMetrics" class="kv" style="margin-top:12px"></div>
       <div class="toolbar" style="margin-top:12px"><button id="quickCheckpointBtn" class="good">快速 Checkpoint</button><button id="fullBackupBtn" class="primary">下載完整備份包</button><button id="handoverSaveBtn">下載完整備份（可搬家）</button></div>
     </div>
@@ -145,31 +150,31 @@
   </section>
 
 
-  <section id="tab-packs" class="tab">
+  <section id="tab-packs" class="tab hidden" aria-hidden="true">
     <div class="card">
-      <div class="section-title"><h2>私人資料 Packs</h2><span class="pill" id="packHealth">0 / 6</span></div>
-      <div class="notice good">這六份 Pack 只存進此網站在 Safari 的 IndexedDB，不會寫進公開 <code>index.html</code>，也不會上傳到 GitHub。新版資料包會核對內容雜湊；有未完成回合時不允許替換規則。<br><b>這裡更新的是本機備援副本，不會自動更新 Project 的 Live Controller。</b></div>
-      <label>一次可選一份或多份 JSON</label>
-      <input type="file" id="packFiles" accept="application/json,.json" multiple />
+      <div class="section-title"><h2>專案正式來源的本機備援快照</h2><span class="pill" id="packHealth">本機 0 / 6</span></div>
+      <div class="notice good">正式規則仍以 ChatGPT Project 裡的資料來源為準。這裡只保存六份來源的 Safari 本機備援快照，不會寫進公開 <code>index.html</code>，也不會上傳到 GitHub。<br>維護時可以直接選 Project 下載的 <b>TXT／YAML／JSON</b> 原始檔；本頁會依文件內容辨識 slot、計算 SHA-256，並以內容雜湊去重。相同內容再次匯入不會製造第二份有效副本。</div>
+      <label>維護時可選一份或多份 Project 正式來源（TXT／YAML／JSON）</label>
+      <input type="file" id="packFiles" accept=".txt,.yaml,.yml,.json,text/plain,application/json,application/yaml,text/yaml" multiple />
       <div class="toolbar" style="margin-top:10px">
-        <button id="importPacksBtn" class="primary">匯入／更新本機備援 Packs</button>
-        <button id="exportPackManifestBtn">下載 Pack Manifest</button>
+        <button id="importPacksBtn" class="primary">更新本機來源備援快照</button>
+        <button id="exportPackManifestBtn">下載來源備援 Manifest</button>
       </div>
       <div id="packImportStatus" style="margin-top:10px"></div>
-      <label>本回合規則檢索</label><input id="packQuery" placeholder="人物、能力、制度或事件關鍵字"><button id="searchPacksBtn" style="margin:10px 0">讀取相關規則</button><pre id="packSearchResults" class="mono"></pre><div id="packList" class="list" style="margin-top:12px"></div>
+      <label>備援來源搜尋（維護用）</label><input id="packQuery" placeholder="人物、能力、制度或事件關鍵字"><button id="searchPacksBtn" style="margin:10px 0">搜尋備援來源</button><pre id="packSearchResults" class="mono"></pre><div id="packList" class="list" style="margin-top:12px"></div>
       <details><summary>這裡存哪六份？</summary>
-        <p class="small">World Canon、Core Rules、Presentation、Character Design、Character Inspiration、Save Engine Policy。Runtime／Journal／Archive 仍是另一套本局活資料，不會塞進 Packs。</p>
+        <p class="small">World Canon、Core Rules、Presentation、Character Design、Character Inspiration、Save Engine Policy。它們只是 Project 正式來源的本機備援快照。Runtime／Journal／Archive 是另一套本局活資料，不會塞進來源備援。</p>
       </details>
     </div>
     <div style="height:12px"></div>
     <div class="card danger-zone">
-      <div class="section-title"><h2>清除私人 Packs</h2><span class="pill">不影響 Runtime</span></div>
-      <button id="wipePacksBtn" class="bad">只清除 Safari 內的六份 Packs</button>
+      <div class="section-title"><h2>清除本機來源備援</h2><span class="pill">不影響 Runtime</span></div>
+      <button id="wipePacksBtn" class="bad">只清除 Safari 內的六份來源備援</button>
     </div>
   </section>
 
   <section id="tab-settings" class="tab">
-    <div class="card"><div class="section-title"><h2>Runtime 匯入／備份</h2><span class="pill">資料留在 Safari</span></div><div class="notice warn">這裡匯入或還原的 Runtime 只影響 Safari 本機備援，不會同步到 Project 的 Live Controller。正常 RP 不需要在這裡匯入每一回合。</div>
+    <div class="card"><div class="section-title"><h2>本機 Runtime 匯入／備份</h2><span class="pill">資料留在 Safari</span></div><div class="notice warn">這裡匯入或還原的 Runtime 只影響 Safari 本機備援，不會同步到 Project 的 Live Controller。正常 RP 不需要在這裡匯入每一回合。</div>
       <input type="file" id="runtimeFile" accept="application/json,.json" />
       <div class="toolbar" style="margin-top:10px"><button id="importRuntimeBtn" class="primary">匯入 Runtime</button><button id="exportRuntimeBtn" class="good">下載 CURRENT</button><button id="shareRuntimeBtn">分享 CURRENT</button><button id="validateRuntimeBtn">重新驗證</button></div>
       <div id="importStatus" style="margin-top:10px"></div>
@@ -178,7 +183,7 @@
     <div style="height:12px"></div>
     <div class="card danger-zone"><div class="section-title"><h2>清除本機資料</h2><span class="pill">原版資料與下載備份保留</span></div><button id="wipeBtn" class="bad">重設目前存檔並下載備份</button></div>
   </section>
-  <div class="footer">Aethergard Controller v3.2.1 • maintenance mirror / local storage / no telemetry</div>
+  <div class="footer">Aethergard Controller v3.3.1 • Project-authoritative maintenance mirror / local storage / no telemetry</div>
 </main>
 <script type="module">
 const LegacyCore = (() => {
@@ -798,6 +803,32 @@ function validateRuntime(rt){
  return true;
 }
 
+const RAW_SLOT_META={
+ WORLD_CANON:{pack_type:null,title:'艾瑟加德｜完整世界設定集'},
+ CORE_RULES:{pack_type:'CORE_RULES',title:'長篇RP核心系統｜正式整合版'},
+ PRESENTATION:{pack_type:'AETHERGARD_PRESENTATION_PACK',title:'艾瑟加德｜開局與回合呈現規格'},
+ CHARACTER_DESIGN:{pack_type:'CHARACTER_DESIGN_RULES',title:'角色設計與生成規則｜純角色設計版'},
+ CHARACTER_INSPIRATION:{pack_type:'CHARACTER_INSPIRATION_REFERENCE',title:'角色類型與魅力靈感庫'},
+ SAVE_ENGINE_POLICY:{pack_type:'SAVE_ENGINE_POLICY',title:'萬用長篇角色扮演｜獨立存檔與搬家承接系統'}
+};
+function inferRawSourceSlot(filename,text){
+ const n=String(filename||'').toLowerCase(),t=String(text||'').slice(0,24000);
+ if(/package_id:\s*LONG_FORM_RP_CORE|title:\s*長篇RP核心系統|長篇RP核心系統[｜_]/i.test(t)||/長篇rp核心系統/.test(n))return 'CORE_RULES';
+ if(/艾瑟加德[｜_].*開局與回合呈現規格/.test(t)||/開局與回合呈現規格/.test(n))return 'PRESENTATION';
+ if(/角色設計與生成規則[｜_].*純角色設計版/.test(t)||/角色設計與生成規則/.test(n))return 'CHARACTER_DESIGN';
+ if(/角色類型與魅力靈感庫/.test(t)||/角色類型與魅力靈感庫/.test(n))return 'CHARACTER_INSPIRATION';
+ if(/獨立存檔與搬家承接系統/.test(t)||/獨立存檔與搬家承接系統/.test(n))return 'SAVE_ENGINE_POLICY';
+ if(/艾瑟加德[｜_].*完整世界設定/.test(t)||/完整世界設定/.test(n))return 'WORLD_CANON';
+ fail('UNKNOWN_RAW_SOURCE',filename||'未命名檔案');
+}
+async function fileToPackInput(file){
+ const raw=await file.text(),name=String(file.name||'').toLowerCase();
+ if(name.endsWith('.json')){try{return safeJSON(raw);}catch(_){}}
+ const slot=inferRawSourceSlot(file.name,raw),meta=RAW_SLOT_META[slot],sha256=await hash(raw);
+ if(slot==='WORLD_CANON')return {schema:'aethergard.world_canon_pack',formal_title:meta.title,source_filename:file.name,source_sha256:sha256,source_text:raw};
+ return {pack_type:meta.pack_type,formal_title:meta.title,source_filename:file.name,source_sha256:sha256,source_text:raw};
+}
+
 async function normalizePack(original){
  safeJSON(original);need(plain(original),'INVALID_PACK');
  if(original.normalized_version===3)original=original.original;
@@ -818,8 +849,8 @@ async function normalizePack(original){
 }
 async function importPacks(state,items){
  const next={...state,packs:{...state.packs}};const normalized=await Promise.all(items.map(normalizePack));need(new Set(normalized.map(p=>p.slot)).size===normalized.length,'DUPLICATE_PACK_IN_BATCH');
- for(const p of normalized)next.packs[p.slot]=p;
- if(state.active_request||state.runtime?.pending_turn){need(normalized.every(p=>state.packs[p.slot]?.sha256===p.sha256),'PACK_UPDATE_DURING_PENDING','先完成或丟棄目前回合，再更新規則。');}
+ if(state.active_request||state.runtime?.pending_turn){need(normalized.every(p=>state.packs[p.slot]?.sha256===p.sha256),'PACK_UPDATE_DURING_PENDING','先完成或丟棄目前回合，再更新來源備援。');}
+ for(const p of normalized){if(next.packs[p.slot]?.sha256===p.sha256)continue;next.packs[p.slot]=p;}
  return next;
 }
 function packVersions(state){return Object.fromEntries(SLOTS.filter(s=>state.packs[s]).map(s=>[s,state.packs[s].sha256]));}
@@ -943,6 +974,19 @@ function compactAutoCheckpoints(checkpoints){
  }
  return rows.filter((c,i)=>!rules.some(([label])=>c?.label===label)||keep.has(i));
 }
+function pruneCheckpointMetadata(runtime,checkpoints){
+ if(!runtime)return runtime;
+ const rt=clone(runtime),ids=new Set(arr(checkpoints).map(c=>c?.checkpoint_id).filter(Boolean));
+ rt.checkpoint_index=arr(rt.checkpoint_index).filter(x=>ids.has(x?.checkpoint_id));
+ if(rt.save_engine){
+  const last=arr(checkpoints).at(-1)||null;
+  if(rt.save_engine.last_checkpoint_id&&!ids.has(rt.save_engine.last_checkpoint_id)){
+   rt.save_engine.last_checkpoint_id=last?.checkpoint_id??null;
+   rt.save_engine.last_checkpoint_revision=last?.revision??null;
+  }
+ }
+ return rt;
+}
 function nextState(state){return {...state,runtime:state.runtime?clone(state.runtime):null,active_request:state.active_request?clone(state.active_request):null,journal:[...state.journal],checkpoints:compactAutoCheckpoints(state.checkpoints),operations:compactOperations(state.operations)};}
 function status(state){return {version:VERSION,initialized:!!state.runtime,revision:state.runtime?.state_revision??null,branch_id:state.runtime?.branch_id??null,world_time:state.runtime?.simulation_time?.current_world_datetime??null,pack_count:Object.keys(state.packs).length,missing_packs:SLOTS.filter(s=>!state.packs[s]),pending_turn_id:state.runtime?.pending_turn?.turn_id??null,pending_narration:state.runtime?.pending_turn?.narration??null,active_request_id:state.active_request?.id??null,exact_handoff:state.runtime?.current_scene?.exact_handoff??null};}
 async function beginTurn(state,args){
@@ -1029,7 +1073,7 @@ class LocalStore {
   this.revision=0;let state=E.emptyState();if(rows.runtime){state.runtime=E.migrateRuntime(rows.runtime);state.journal=rows['delta-journal']||[];state.cold_archive=rows['cold-archive']||[];state.checkpoints=(rows.checkpoints||[]).map(c=>({...c,legacy:true}));}
   state=await E.importPacks(state,Object.values(rows['private-packs-v1']||{}).map(p=>p.data??p));return state;
  }
- async save(state){if(state.runtime)E.validateRuntime(state.runtime);state={...state,operations:compactOperations(state.operations),checkpoints:compactAutoCheckpoints(state.checkpoints)};const {packs,journal,cold_archive,checkpoints,...hot}=state;const parts={packs:[],journal:[],cold_archive:[],checkpoints:[]},writes=[];
+ async save(state){if(state.runtime)E.validateRuntime(state.runtime);const compacted=compactAutoCheckpoints(state.checkpoints);state={...state,runtime:pruneCheckpointMetadata(state.runtime,compacted),operations:compactOperations(state.operations),checkpoints:compacted};const {packs,journal,cold_archive,checkpoints,...hot}=state;const parts={packs:[],journal:[],cold_archive:[],checkpoints:[]},writes=[];
   for(const [kind,items] of Object.entries({packs:Object.values(packs),journal,cold_archive,checkpoints}))for(const item of items){let digest=this.hashCache.get(item);if(!digest){digest=await E.hash(item);this.hashCache.set(item,digest);}const key=`v3:${kind}:${digest}`;parts[kind].push(key);if(!this.keys.has(key))writes.push([key,item]);}
   const keep=new Set(Object.values(parts).flat());
   const d=await this.db();try{let removed=0;const revision=await new Promise((res,rej)=>{const tx=d.transaction('kv','readwrite'),s=tx.objectStore('kv');let error=null;const q=s.get('controller-v3');q.onsuccess=()=>{const current=q.result?.revision??0;if(current!==this.revision){error=new Error('另一個分頁已更新存檔，請重新載入後再操作。');tx.abort();return;}for(const [k,v] of writes)s.put(v,k);s.put({revision:current+1,state:hot,parts},'controller-v3');const kq=s.getAllKeys();kq.onsuccess=()=>{for(const key of kq.result){if(typeof key==='string'&&key.startsWith('v3:')&&!keep.has(key)){s.delete(key);removed++;}}};};tx.oncomplete=()=>res(this.revision+1);tx.onabort=()=>rej(error||tx.error||new Error('保存中斷，原存檔仍保留。'));tx.onerror=()=>rej(tx.error);});this.revision=revision;this.keys=keep;this.lastCleanup={removed,retained:keep.size};}finally{d.close();}}
@@ -1041,19 +1085,19 @@ const esc=x=>String(x??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&
 const pretty=x=>JSON.stringify(x,null,2);
 const box=(x,bad=false)=>`<div class="notice ${bad?'bad':'good'}">${esc(x)}</div>`;
 const name=id=>state.runtime?.entity_registry.find(e=>e.entity_id===id)?.canonical_name??id;
-async function change(next){next={...next,operations:compactOperations(next.operations),checkpoints:compactAutoCheckpoints(next.checkpoints)};await store.save(next);state=next;render();}
+async function change(next){const compacted=compactAutoCheckpoints(next.checkpoints);next={...next,runtime:pruneCheckpointMetadata(next.runtime,compacted),operations:compactOperations(next.operations),checkpoints:compacted};await store.save(next);state=next;render();}
 function bind(id,fn,target='#importStatus'){$(id).onclick=async()=>{if(busy)return;busy=true;$$('button').forEach(b=>b.disabled=true);try{await fn();}catch(e){$(target).innerHTML=box(e.message,true);}finally{busy=false;$$('button').forEach(b=>b.disabled=false);}};}
 function download(x,filename){const b=new Blob([pretty(x)],{type:'application/json'}),url=URL.createObjectURL(b),a=document.createElement('a');a.href=url;a.download=filename;a.click();setTimeout(()=>URL.revokeObjectURL(url),1000);}
 async function exportFull(){download(await E.backup(state),`Aethergard_FULL_BACKUP_rev${state.runtime.state_revision}_PRIVATE.json`);}
 function render(){
  const rt=state.runtime,s=E.status(state);
- $('#metrics').innerHTML=[['Revision',s.revision??'未載入'],['世界時間',s.world_time??'未載入'],['地點',rt?name(rt.current_scene.location_entity_id):'未載入'],['候選回合',s.pending_turn_id?'等待接受':'無'],['來源',`${s.pack_count}/6`]].map(([l,v])=>`<div class="card metric"><div class="label">${esc(l)}</div><div class="value">${esc(v)}</div></div>`).join('');
+ $('#metrics').innerHTML=[['本機 Revision',s.revision??'未載入'],['備援世界時間',s.world_time??'未載入'],['備援地點',rt?name(rt.current_scene.location_entity_id):'未載入'],['本機 Pending',s.pending_turn_id?'等待接受':'無'],['本機來源備援',`${s.pack_count}/6`]].map(([l,v])=>`<div class="card metric"><div class="label">${esc(l)}</div><div class="value">${esc(v)}</div></div>`).join('');
  $('#handoff').textContent=s.exact_handoff||'請匯入現有 Runtime 或完整備份。';$('#runtimeHealth').textContent=rt?'資料結構已驗證':'尚未匯入';$('#pendingPill').textContent=s.pending_turn_id?'等待接受':'無候選回合';$('#revisionPill').textContent=`rev ${s.revision??'?'}`;
  $('#sceneSummary').innerHTML=rt?`<div class="k">在場</div><div>${esc(rt.current_scene.present_entities.map(name).join('、'))}</div><div class="k">未完對話</div><div>${esc(pretty(rt.current_scene.unresolved_dialogue_threads))}</div>`:'';
  $('#actorSelect').innerHTML=(rt?.character_runtime||[]).map(c=>`<option value="${esc(c.entity_id)}">${esc(name(c.entity_id))}</option>`).join('');
  const selector=$('#stateCollection'),previous=selector.value;selector.innerHTML=Object.keys(rt||{}).map(k=>`<option>${esc(k)}</option>`).join('');if(previous)selector.value=previous;renderState();
- $('#packHealth').textContent=`${s.pack_count}/6`;
- $('#packList').innerHTML=E.SLOTS.map(slot=>`<div class="item"><b>${esc(slot)}</b><br>${state.packs[slot]?`${esc(state.packs[slot].title)}<br><span class="small">完整性已核對 · ${state.packs[slot].sections.length} 個檢索區段</span>`:'尚未匯入'}</div>`).join('');
+ $('#packHealth').textContent=`本機 ${s.pack_count}/6`;
+ $('#packList').innerHTML=E.SLOTS.map(slot=>{const p=state.packs[slot];return `<div class="item"><b>${esc(slot)}</b><br>${p?`${esc(p.title)}<br><span class="small">本機備援快照 · ${esc(p.original?.source_filename||'來源檔名未記錄')} · SHA-256 ${esc(p.sha256.slice(0,12))}… · ${p.sections.length} 個檢索區段</span>`:'尚無本機備援快照'}</div>`;}).join('');
  $('#historyList').innerHTML=state.checkpoints.slice(-20).reverse().map(c=>`<div class="item">${esc(c.label)} · rev ${esc(c.revision)} <button data-restore="${esc(c.checkpoint_id)}">還原</button></div>`).join('')||'尚無檢查點';
  $$('[data-restore]').forEach(b=>b.onclick=()=>{if(confirm('還原會建立新分支，並保留還原前快照。確定嗎？'))change(E.restoreCheckpoint(state,b.dataset.restore)).catch(e=>$('#rollbackStatus').innerHTML=box(e.message,true));});
  $('#saveEngineMetrics').innerHTML=`<div class="k">近期 Commit</div><div>${rt?.commit_log?.length??0} / 20</div><div class="k">歷史</div><div>${state.journal.length} 回</div><div class="k">檢查點</div><div>${state.checkpoints.length}</div><div class="k">技術垃圾</div><div>上次自動清理 ${store.lastCleanup.removed} 筆 · 保留 ${store.lastCleanup.retained} 區塊</div><div class="k">自動快照</div><div>還原/回滾各最多 10 · 匯入前最多 5；手動 Checkpoint 不自動刪除</div>`;
@@ -1071,7 +1115,7 @@ bind('#validateCandidateBtn',async()=>{const out=await E.stageTurn(state,E.safeJ
 bind('#rejectPendingBtn',async()=>{const out=E.discardTurn(state,{request_id:state.active_request?.id,pending_turn_id:state.runtime?.pending_turn?.turn_id});await change(out.state);$('#candidateStatus').innerHTML=box('候選回合作廢，正式歷史未改。');},'#candidateStatus');
 bind('#buildPacketBtn',async()=>{$('#packetPreview').textContent=pretty(E.actorPacket(state.runtime,$('#actorSelect').value,state.active_request?.input));});bind('#copyPacketBtn',async()=>navigator.clipboard.writeText($('#packetPreview').textContent));
 bind('#importRuntimeBtn',async()=>{const file=$('#runtimeFile').files?.[0];if(!file)throw new Error('請先選 JSON。');if(state.runtime&&!confirm('目前進度會先留檢查點，再匯入這份存檔。確定嗎？'))return;let next=await E.importBackup(E.safeJSON(await file.text()));if(!Object.keys(next.packs).length)next.packs=state.packs;if(state.runtime)next.checkpoints=[...E.checkpoint(state,'匯入前快照').checkpoints,...next.checkpoints];await change(next);$('#importStatus').innerHTML=box('已完整驗證並匯入。');});
-bind('#importPacksBtn',async()=>{const files=[...$('#packFiles').files];if(!files.length)throw new Error('請先選資料包。');const packs=await Promise.all(files.map(async f=>E.safeJSON(await f.text())));if(state.runtime||Object.keys(state.packs).length)await exportFull();await change(await E.importPacks(state,packs));$('#packImportStatus').innerHTML=box('本機備援 Packs 已核對並保存；更新前完整備份已下載。Project 的 Live Controller 未被修改。');},'#packImportStatus');
+bind('#importPacksBtn',async()=>{const files=[...$('#packFiles').files];if(!files.length)throw new Error('請先選 Project 正式來源檔。');const packs=await Promise.all(files.map(fileToPackInput));if(state.runtime||Object.keys(state.packs).length)await exportFull();const before=E.packVersions(state),next=await E.importPacks(state,packs),after=E.packVersions(next);await change(next);const changed=Object.keys(after).filter(k=>before[k]!==after[k]);$('#packImportStatus').innerHTML=box(changed.length?`本機來源備援已更新：${changed.join('、')}。更新前完整備份已下載；Project 本身未被修改。`:'所選來源內容與本機備援相同，沒有建立重複版本。');},'#packImportStatus');
 bind('#exportPackManifestBtn',async()=>download({versions:E.packVersions(state),packs:Object.fromEntries(Object.entries(state.packs).map(([k,p])=>[k,{title:p.title,sections:p.sections.length}]))},'Aethergard_Pack_Manifest.json'));
 for(const id of ['#fullBackupBtn','#exportHandoverBtn','#handoverSaveBtn'])bind(id,exportFull);
 bind('#exportRuntimeBtn',async()=>download(state.runtime,`Aethergard_Runtime_rev${state.runtime.state_revision}_PRIVATE.json`));bind('#shareRuntimeBtn',exportFull);
@@ -1081,7 +1125,7 @@ bind('#rollbackBtn',async()=>{const v=Number($('#rollbackRefs').value);if(!Numbe
 bind('#archiveEventBtn',async()=>{await change(E.archiveEvent(state,$('#archiveCandidateSelect').value));$('#archiveStatus').innerHTML=box('事件已封存，有效牽連檢查通過。');},'#archiveStatus');
 bind('#wipePacksBtn',async()=>{if(state.active_request)throw new Error('先完成或丟棄目前回合。');if(confirm('清空目前資料包？完整備份仍可還原。'))await change({...state,packs:{}});},'#packImportStatus');
 bind('#wipeBtn',async()=>{if(confirm('重設目前存檔？會先下載完整備份，原 v2 資料仍保留於瀏覽器。')){if(state.runtime)await exportFull();await change({...E.emptyState(),packs:state.packs});}});
-bind('#searchPacksBtn',async()=>{if(!state.active_request)throw new Error('請先建立回合請求。');const rows=E.searchSections(state,{query:$('#packQuery').value,slots:E.SLOTS,limit:8});const out=E.readSections(state,{request_id:state.active_request.id,section_ids:rows.map(x=>x.id)});await change(out.state);$('#packSearchResults').textContent=pretty(out.result);},'#packImportStatus');
+bind('#searchPacksBtn',async()=>{const rows=E.searchSections(state,{query:$('#packQuery').value,slots:E.SLOTS,limit:8});$('#packSearchResults').textContent=pretty({mode:'LOCAL_BACKUP_SEARCH',authority:'ChatGPT Project sources',results:rows.map(({slot,title,start_line,end_line,text})=>({slot,title,start_line,end_line,text}))});},'#packImportStatus');
 try{state=await store.load();render();}catch(e){$('#importStatus').innerHTML=box('載入失敗，原資料未改：'+e.message,true);}
 
 </script></body></html>
